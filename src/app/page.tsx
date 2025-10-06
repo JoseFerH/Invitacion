@@ -4,6 +4,7 @@ import { EventInfo } from '@/components/invitation/EventInfo';
 import { RsvpForm } from '@/components/invitation/RsvpForm';
 import { SongSuggest } from '@/components/invitation/SongSuggest';
 import { PhotoSection } from '@/components/invitation/PhotoSection';
+import { AddToCalendar } from '@/components/invitation/AddToCalendar';
 
 const Decoration = ({ className }: { className?: string }) => (
   <svg
@@ -56,6 +57,7 @@ export default function Home() {
         <InvitationDetails />
         <EventInfo />
         <RsvpForm />
+        <AddToCalendar />
         <SongSuggest />
         <PhotoSection />
       </main>
