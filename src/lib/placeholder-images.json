@@ -1,22 +1,3 @@
 {
-  "placeholderImages": [
-    {
-      "id": "lavender-corner-top",
-      "description": "A spray of lavender flowers for the top corner.",
-      "imageUrl": "https://images.unsplash.com/photo-1595562161314-4ed3f3503826?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxsYXZlbmRlciUyMGZsb3dlcnxlbnwwfHx8fDE3NTk3NjMxMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "lavender flower"
-    },
-    {
-      "id": "lavender-corner-bottom",
-      "description": "A spray of lavender flowers for the bottom corner.",
-      "imageUrl": "https://images.unsplash.com/photo-1477511801984-4ad318ed9846?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsYXZlbmRlcnxlbnwwfHx8fDE3NTk3Njk0OTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "lavender"
-    },
-    {
-      "id": "hydrangea-centerpiece",
-      "description": "A bouquet of hydrangea flowers for decoration.",
-      "imageUrl": "https://images.unsplash.com/photo-1692348598840-cabc767fe18b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxoeWRyYW5nZWElMjBmbG93ZXJ8ZW58MHx8fHwxNzU5NzY5NDkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hydrangea flower"
-    }
-  ]
+  "placeholderImages": []
 }
