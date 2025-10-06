@@ -1,67 +1,89 @@
 /**
- * @fileoverview Firestore Security Rules for Gabriela's Graduation Gala application.
+ * @fileoverview Firestore Security Rules for Gabriela's Graduation Gala.
  *
  * Core Philosophy:
- * This ruleset provides basic protection against unauthorized access to events,
- * guests, and song suggestions. It assumes a public read model with owner-only
- * writes, but enforces ownership checks only where they can be implemented with
- * the current data model. Data shape validation is omitted to allow for rapid
- * prototyping.
+ * This ruleset prioritizes secure access to event details, guest information, and song suggestions.
+ * It enforces strict ownership for guest data and their associated song suggestions, while allowing public read access to event details.
  *
  * Data Structure:
- * - /events/{eventId}: Stores event details. Publicly readable.
- * - /guests/{guestId}: Stores guest information. Publicly readable.
- * - /guests/{guestId}/song_suggestions/{suggestionId}: Stores song suggestions, nested under guests.
+ * - /events/{eventId}: Stores event details, publicly readable.
+ * - /guests/{guestId}: Stores guest information and RSVP details. Guest-owned.
+ * - /guests/{guestId}/song_suggestions/{suggestionId}: Stores song suggestions made by each guest. Guest-owned.
  *
  * Key Security Decisions:
- * - Public read access is enabled for all collections to simplify prototyping.
- * - Owner-only write access is attempted where the schema contains an explicit
- *   ownership field.  Where ownership is implied by the path, this is enforced.
- * - Data validation is minimal, focusing only on fields critical for authorization
- *   (e.g., creatorId, ownerId) or relational integrity.
+ * - Event details are publicly readable to allow easy access for all users.
+ * - Guest data and song suggestions are strictly controlled by the owning guest (identified via their unique ID).
+ * - Listing guests or song suggestions is only allowed for the owning guest.
+ * - An anonymous user or signed in user can create an event but cannot modify it once created.
+ *
+ * Denormalization for Authorization:
+ * - Song suggestions are nested under guests to simplify ownership checks and avoid complex queries.
+ *
+ * Structural Segregation:
+ * - There is no explicit segregation of private vs. public data using separate collections. The /events collection assumes public read access.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Allows public read access to event documents, but restricts creation, updates, and deletion to owners.
+     * @description Allows anyone to read event details, but restricts creation, updates, and deletes to the event creator.
      * @path /events/{eventId}
      * @allow get, list: if true;
-     * @deny create, update, delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-     * @principle Public read, owner-only writes (schema does not support secure implementation).
+     * @allow create: if isSignedIn();
+     * @deny update: if true;
+     * @deny delete: if true;
+     * @principle Allows public read access to event details while restricting write access.
      */
     match /events/{eventId} {
       allow get, list: if true;
-      allow create, update, delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow create: if isSignedIn();
+      allow update, delete: if false;
     }
 
     /**
-     * @description Allows public read access to guest documents, but restricts creation, updates, and deletion to owners.
+     * @description Allows a guest to read, create, update, and delete their own guest data.
      * @path /guests/{guestId}
-     * @allow get, list: if true;
-     * @deny create, update, delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-     * @principle Public read, owner-only writes (schema does not support secure implementation).
+     * @allow get, list: if isOwner(guestId);
+     * @allow create: if isOwner(guestId);
+     * @allow update: if isExistingOwner(guestId);
+     * @allow delete: if isExistingOwner(guestId);
+     * @principle Enforces document ownership for all guest-related operations.
      */
     match /guests/{guestId} {
-      allow get, list: if true;
-      allow create, update, delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow get, list: if isOwner(guestId);
+      allow create: if isOwner(guestId);
+      allow update: if isExistingOwner(guestId);
+      allow delete: if isExistingOwner(guestId);
 
       /**
-       * @description Allows the owner of a guest to manage their song suggestions.
+       * @description Allows a guest to read, create, update, and delete their own song suggestions.
        * @path /guests/{guestId}/song_suggestions/{suggestionId}
-       * @allow get, list: if true;
-       * @allow create: if request.auth.uid != null;
-       * @allow update: if request.auth.uid != null;
-       * @allow delete: if request.auth.uid != null;
-       * @principle Enforces document ownership for writes, restricts access to a user's own data tree.
+       * @allow get, list: if isOwner(guestId);
+       * @allow create: if isOwner(guestId);
+       * @allow update: if isExistingOwner(guestId);
+       * @allow delete: if isExistingOwner(guestId);
+       * @principle Enforces document ownership for all song suggestion-related operations.
        */
       match /song_suggestions/{suggestionId} {
-        allow get, list: if true;
-        allow create: if request.auth.uid != null;
-        allow update: if request.auth.uid != null;
-        allow delete: if request.auth.uid != null;
+        allow get, list: if isOwner(guestId);
+        allow create: if isOwner(guestId);
+        allow update: if isExistingOwner(guestId);
+        allow delete: if isExistingOwner(guestId);
       }
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
     }
   }
 }

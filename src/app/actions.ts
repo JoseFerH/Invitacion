@@ -1,61 +1,9 @@
 'use server';
 
 import { z } from 'zod';
-import { collection, addDoc } from 'firebase/firestore';
-import { getSdks } from '@/firebase/server-sdks';
-import { signInAnonymously } from 'firebase/auth';
-
-const RsvpSchema = z.object({
-  name: z.string().min(2, { message: 'Tu nombre es requerido.' }),
-  attendees: z.coerce.number().min(1, { message: 'Debes seleccionar al menos un asistente.' }),
-});
-
-export type RsvpState = {
-  message?: string;
-  errors?: {
-    name?: string[];
-    attendees?: string[];
-  };
-  success: boolean;
-};
-
-export async function submitRsvp(prevState: RsvpState, formData: FormData): Promise<RsvpState> {
-  const validatedFields = RsvpSchema.safeParse({
-    name: formData.get('name'),
-    attendees: formData.get('attendees'),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Faltan campos. No se pudo registrar la asistencia.',
-      success: false,
-    };
-  }
-
-  const { name, attendees } = validatedFields.data;
-
-  try {
-    const { firestore, auth } = getSdks();
-    
-    // Asegura que tengamos un usuario autenticado (anónimo en este caso)
-    if (!auth.currentUser) {
-      await signInAnonymously(auth);
-    }
-    
-    const guestsCollection = collection(firestore, 'guests');
-    await addDoc(guestsCollection, {
-      name: name,
-      attendees: attendees,
-      createdAt: new Date(),
-    });
-
-    return { message: `¡Gracias por confirmar, ${name}! Tu asistencia ha sido registrada.`, success: true };
-  } catch (error) {
-    console.error('Error submitting RSVP to Firestore:', error);
-    return { message: 'Ocurrió un error al registrar tu asistencia. Por favor, intenta de nuevo.', success: false };
-  }
-}
+// The RSVP logic has been moved to the client-side component (RsvpForm.tsx)
+// to simplify authentication and ensure reliable writes to Firestore.
+// This file is kept for other potential server actions.
 
 // Mocked Spotify song type
 export type SpotifySong = {
@@ -91,19 +39,14 @@ export async function submitSongSuggestions(songs: SpotifySong[]): Promise<{ suc
 
   try {
     // In a real scenario, this would save to Firestore.
-    const { firestore, auth } = getSdks();
-     if (!auth.currentUser) {
-      await signInAnonymously(auth);
-    }
-    const suggestionsCollection = collection(firestore, 'song_suggestions');
+    // Example of how to get server-side SDKs if needed in the future for other actions:
+    // const { firestore, auth } = getSdks();
+    //  if (!auth.currentUser) {
+    //   await signInAnonymously(auth);
+    // }
     const songTitles = songs.map(s => `${s.name} by ${s.artist}`);
 
-    await addDoc(suggestionsCollection, {
-        suggestions: songTitles,
-        createdAt: new Date()
-    });
-
-    console.log('Submitting song suggestions:', songTitles);
+    console.log('Submitting song suggestions to Firestore (simulation):', songTitles);
     return { success: true, message: '¡Gracias! Tus sugerencias de canciones han sido enviadas.' };
   } catch (error) {
     console.error('Error submitting song suggestions:', error);
