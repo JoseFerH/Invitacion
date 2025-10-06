@@ -37,8 +37,10 @@ export function SongSuggest() {
   },[debouncedQuery, handleSearch]);
 
   const addSong = (song: SpotifySong) => {
-    if (!selectedSongs.find(s => s.id === song.id)) {
+    if (!selectedSongs.find(s => s.id === song.id) && selectedSongs.length < 10) {
       setSelectedSongs(prev => [...prev, song]);
+    } else if (selectedSongs.length >= 10) {
+      toast({ title: "Límite alcanzado", description: "Puedes sugerir un máximo de 10 canciones.", variant: "destructive"});
     }
   };
 
@@ -63,49 +65,50 @@ export function SongSuggest() {
   };
 
   return (
-    <section className="py-8">
+    <section className="py-8 font-body">
         <SectionTitle>¡Ponle ritmo a la fiesta!</SectionTitle>
         <p className="text-center text-foreground/80 -mt-4 mb-6 max-w-md mx-auto">Sugiere canciones para que el DJ las ponga en la fiesta.</p>
         
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 p-6 bg-card/50 backdrop-blur-sm rounded-2xl shadow-xl border border-accent/20">
             {/* Search Column */}
             <div className="space-y-4">
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                type="text"
-                placeholder="Busca una canción o artista..."
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-                className="pl-10"
-                />
-            </div>
-            <ScrollArea className="h-64 rounded-md border p-2 bg-secondary/30">
-                {isSearching && <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}
-                {!isSearching && searchResults.length === 0 && (
-                <div className="flex flex-col justify-center items-center h-full text-muted-foreground">
-                    <Music className="h-8 w-8 mb-2" />
-                    <p className="text-sm">Resultados de la búsqueda aquí</p>
+                <h3 className="font-bold text-lg text-primary text-left font-headline">Buscar Canciones</h3>
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input
+                    type="text"
+                    placeholder="Busca una canción o artista..."
+                    value={query}
+                    onChange={e => setQuery(e.target.value)}
+                    className="pl-10 bg-background/80"
+                    />
                 </div>
-                )}
-                <div className="space-y-2">
-                {searchResults.map(song => (
-                <div key={song.id} onClick={() => addSong(song)} className="flex items-center gap-3 p-2 rounded-md hover:bg-accent/20 cursor-pointer">
-                    <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
-                    <div className="text-left flex-grow overflow-hidden">
-                    <p className="font-semibold truncate">{song.name}</p>
-                    <p className="text-sm text-muted-foreground truncate">{song.artist}</p>
+                <ScrollArea className="h-64 rounded-md border p-2 bg-background/30">
+                    {isSearching && <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}
+                    {!isSearching && searchResults.length === 0 && (
+                    <div className="flex flex-col justify-center items-center h-full text-muted-foreground">
+                        <Music className="h-8 w-8 mb-2" />
+                        <p className="text-sm">Resultados de la búsqueda aquí</p>
                     </div>
-                </div>
-                ))}
-                </div>
-            </ScrollArea>
+                    )}
+                    <div className="space-y-2">
+                    {searchResults.map(song => (
+                    <div key={song.id} onClick={() => addSong(song)} className="flex items-center gap-3 p-2 rounded-md hover:bg-accent/20 cursor-pointer">
+                        <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
+                        <div className="text-left flex-grow overflow-hidden">
+                        <p className="font-semibold truncate">{song.name}</p>
+                        <p className="text-sm text-muted-foreground truncate">{song.artist}</p>
+                        </div>
+                    </div>
+                    ))}
+                    </div>
+                </ScrollArea>
             </div>
 
             {/* Selected Songs Column */}
             <div className="space-y-4">
-            <h3 className="font-bold text-lg text-primary text-left">Tu lista de sugerencias</h3>
-            <ScrollArea className="h-64 rounded-md border p-2 bg-secondary/30">
+            <h3 className="font-bold text-lg text-primary text-left font-headline">Tu lista de sugerencias ({selectedSongs.length}/10)</h3>
+            <ScrollArea className="h-64 rounded-md border p-2 bg-background/30">
                 {selectedSongs.length === 0 && (
                 <div className="flex flex-col justify-center items-center h-full text-muted-foreground">
                     <PartyPopper className="h-8 w-8 mb-2" />
@@ -114,7 +117,7 @@ export function SongSuggest() {
                 )}
                 <div className="space-y-2">
                 {selectedSongs.map(song => (
-                <div key={song.id} className="flex items-center gap-3 p-2 rounded-md bg-background/50">
+                <div key={song.id} className="flex items-center gap-3 p-2 rounded-md bg-card/50">
                     <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
                     <div className="text-left flex-grow overflow-hidden">
                     <p className="font-semibold truncate">{song.name}</p>
@@ -129,7 +132,7 @@ export function SongSuggest() {
             </ScrollArea>
             </div>
         </div>
-        <Button onClick={handleSubmit} disabled={isSubmitting || selectedSongs.length === 0} className="w-full md:w-1/2 mx-auto mt-6">
+        <Button onClick={handleSubmit} disabled={isSubmitting || selectedSongs.length === 0} className="w-full md:w-1/2 mx-auto mt-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold">
         {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Enviando...</> : "Enviar Sugerencias"}
         </Button>
     </section>

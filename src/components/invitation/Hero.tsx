@@ -1,17 +1,37 @@
+import { GraduationCap } from 'lucide-react';
+
 export function Hero() {
   return (
-    <header className="py-12">
-      <h1 className="text-5xl md:text-7xl font-extrabold text-primary font-headline tracking-tight">
-        GABRIELA ALVARADO DURANTE
-      </h1>
-      <div className="mt-4 max-w-xl mx-auto">
-        <p className="text-xl md:text-2xl text-foreground/80 font-medium">
-          Te invita a celebrar su graduación de la
+    <header className="py-12 space-y-6">
+       <div className="flex justify-center">
+        <div className="relative">
+          <GraduationCap className="w-24 h-24 text-primary" strokeWidth={1.5} />
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+             <span className="text-accent animate-ping absolute inline-flex h-3 w-3 rounded-full bg-accent/75 opacity-75"></span>
+             <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+          </div>
+        </div>
+       </div>
+
+      <div>
+        <p className="text-lg md:text-xl text-foreground/80 font-body">
+            Hoy culmino una etapa importante y deseo celebrarla contigo
         </p>
-        <p className="text-2xl md:text-3xl font-bold text-accent font-headline mt-2">
-          LICENCIATURA EN COMUNICACIÓN Y DISEÑO GRÁFICO
+        <h1 className="text-6xl md:text-8xl font-great-vibes text-primary my-4">
+            Mi Graduación
+        </h1>
+      </div>
+      
+      <div className="max-w-xl mx-auto text-foreground/90 font-body">
+        <p className="text-lg md:text-xl">
+          Celebrando la graduación de
         </p>
-        <p className="text-lg md:text-xl text-foreground/70 mt-2">de la UNIVERSIDAD</p>
+        <p className="text-2xl md:text-3xl font-bold font-headline text-primary mt-2 uppercase tracking-wider">
+          GABRIELA ALVARADO DURANTE
+        </p>
+         <p className="text-lg md:text-xl mt-4">
+          de la <span className="font-bold text-accent">Licenciatura en Comunicación y Diseño Gráfico</span>
+        </p>
       </div>
     </header>
   );

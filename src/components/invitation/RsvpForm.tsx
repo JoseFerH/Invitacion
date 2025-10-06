@@ -14,7 +14,7 @@ import { Send } from 'lucide-react';
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <Button type="submit" disabled={pending} className="w-full mt-4">
+    <Button type="submit" disabled={pending} className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-bold">
       {pending ? 'Enviando...' : 'Confirmar Asistencia'}
       {!pending && <Send className="ml-2 h-4 w-4" />}
     </Button>
@@ -52,24 +52,25 @@ export function RsvpForm() {
   return (
     <section className="py-8">
       <SectionTitle>Confirmar Asistencia</SectionTitle>
-      <form ref={formRef} action={dispatch} className="max-w-md mx-auto space-y-6 mt-8 p-8 rounded-lg bg-card/80 backdrop-blur-sm border border-accent/20 shadow-lg">
-        <div className="space-y-2 text-left">
-          <Label htmlFor="name">Nombre completo del invitado principal</Label>
+      <form ref={formRef} action={dispatch} className="max-w-md mx-auto space-y-6 mt-8 p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-accent/20 shadow-xl">
+        <div className="space-y-2 text-left font-body">
+          <Label htmlFor="name" className="text-primary font-semibold">Nombre completo del invitado principal</Label>
           <Input
             id="name"
             name="name"
             placeholder="Ej. Gabriela Alvarado"
             aria-invalid={!!state.errors?.name}
             aria-describedby="name-error"
+            className="bg-background/80"
           />
           {state.errors?.name && (
             <p id="name-error" className="text-sm text-destructive">{state.errors.name.join(', ')}</p>
           )}
         </div>
-        <div className="space-y-2 text-left">
-          <Label htmlFor="attendees">Número de asistentes (incluyéndote)</Label>
+        <div className="space-y-2 text-left font-body">
+          <Label htmlFor="attendees" className="text-primary font-semibold">Número de asistentes (incluyéndote)</Label>
            <Select name="attendees">
-            <SelectTrigger id="attendees" aria-invalid={!!state.errors?.attendees} aria-describedby="attendees-error">
+            <SelectTrigger id="attendees" aria-invalid={!!state.errors?.attendees} aria-describedby="attendees-error" className="bg-background/80">
               <SelectValue placeholder="Selecciona el número de personas" />
             </SelectTrigger>
             <SelectContent>
