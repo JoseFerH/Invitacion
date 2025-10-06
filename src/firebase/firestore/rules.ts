@@ -1,17 +1,17 @@
 rules_version = '2';
 
-// By default, deny all reads and writes.
+// Por defecto, denegar todas las lecturas y escrituras.
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Deny all access to all documents by default
+    // Denegar el acceso a todos los documentos por defecto.
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // This rule allows any authenticated user (including anonymous users)
-    // to create a document in the 'guests' collection. The 'create' operation
-    // targets the collection itself, so the rule must be on the collection path.
-    // We also explicitly allow reads for potential future features.
+    // Permitir a CUALQUIER usuario autenticado (incluidos los anónimos)
+    // crear un documento en la colección 'guests'. La operación 'create'
+    // se dirige a la colección, por lo que la regla debe estar en el path
+    // de la colección. También se permite la lectura para futuras funciones.
     match /guests/{guestId} {
       allow create, read: if request.auth != null;
     }
