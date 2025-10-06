@@ -7,8 +7,8 @@ service cloud.firestore {
       allow read, write: if false;
     }
     
-    // Allow anyone to create a document in the 'guests' collection.
-    // This is for the RSVP functionality.
+    // Allow any authenticated user (including anonymous) to create a document in the 'guests' collection.
+    // This rule now correctly allows the 'addDoc' operation used by the RSVP form.
     match /guests/{guestId} {
       allow create: if request.auth != null;
     }
