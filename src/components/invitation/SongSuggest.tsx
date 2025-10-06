@@ -25,12 +25,29 @@ export function SongSuggest() {
   const [guestId, setGuestId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check local storage for guestId when component mounts
+    // Check local storage for guestId when component mounts, even before user is loaded
     const storedGuestId = localStorage.getItem('guestId');
     if (storedGuestId) {
       setGuestId(storedGuestId);
     }
-  }, [user]); // Re-check if user state changes
+  }, []); // Empty dependency array ensures this runs only once on initial render
+
+  useEffect(() => {
+    // This effect listens for RSVP form submissions from the same page
+    // and updates the UI without a page refresh.
+    const handleStorageChange = () => {
+      const storedGuestId = localStorage.getItem('guestId');
+      if (storedGuestId) {
+        setGuestId(storedGuestId);
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   const handleSearch = useCallback((searchQuery: string) => {
     if (searchQuery.length < 2) {
