@@ -2,9 +2,9 @@
 
 import { useState, useRef, useTransition } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { useAuth, useFirestore } from '@/firebase';
+import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { SectionTitle } from "./SectionTitle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -50,38 +50,60 @@ export function RsvpForm() {
     setErrors(null);
 
     startSubmitTransition(async () => {
-      try {
-        // 1. Ensure user is authenticated (anonymously)
-        let currentUser = auth.currentUser;
-        if (!currentUser) {
-          const userCredential = await signInAnonymously(auth);
-          currentUser = userCredential.user;
+      // 1. Ensure user is authenticated (anonymously)
+      let currentUser = auth.currentUser;
+      if (!currentUser) {
+        try {
+            const userCredential = await signInAnonymously(auth);
+            currentUser = userCredential.user;
+        } catch (error) {
+             console.error('Anonymous sign-in failed:', error);
+             toast({
+                title: "Error de Autenticación",
+                description: "No se pudo iniciar sesión anónimamente para confirmar. Revisa tu conexión.",
+                variant: "destructive",
+            });
+            return;
         }
-
-        // 2. Save data to Firestore
-        const guestsCollection = collection(firestore, 'guests');
-        await addDoc(guestsCollection, {
-          name: validatedFields.data.name,
-          attendees: validatedFields.data.attendees,
-          createdAt: new Date(),
-        });
-        
-        // 3. Show success and reset form
-        toast({
-          title: "¡Confirmación Exitosa!",
-          description: `¡Gracias por confirmar, ${validatedFields.data.name}! Tu asistencia ha sido registrada.`,
-        });
-        formRef.current?.reset();
-        setFormState({ name: '', attendees: '1' });
-
-      } catch (error) {
-        console.error('Error submitting RSVP to Firestore:', error);
-        toast({
-          title: "Error en la Confirmación",
-          description: "Ocurrió un error al registrar tu asistencia. Por favor, intenta de nuevo.",
-          variant: "destructive",
-        });
       }
+
+      const guestData = {
+        name: validatedFields.data.name,
+        attendees: validatedFields.data.attendees,
+        createdAt: serverTimestamp(), // Use server timestamp for consistency
+      };
+      
+      const guestsCollection = collection(firestore, 'guests');
+
+      // 2. Save data to Firestore with non-blocking error handling
+      addDoc(guestsCollection, guestData)
+        .then(() => {
+          // 3. Show success and reset form
+          toast({
+            title: "¡Confirmación Exitosa!",
+            description: `¡Gracias por confirmar, ${validatedFields.data.name}! Tu asistencia ha sido registrada.`,
+          });
+          formRef.current?.reset();
+          setFormState({ name: '', attendees: '1' });
+        })
+        .catch(async (serverError) => {
+          // This catch block is specifically for Firestore permission errors.
+          const permissionError = new FirestorePermissionError({
+            path: guestsCollection.path,
+            operation: 'create',
+            requestResourceData: guestData,
+          });
+
+          // Emit the detailed error for debugging. It will be caught by FirebaseErrorListener.
+          errorEmitter.emit('permission-error', permissionError);
+
+          // You can still show a generic message to the user if you want.
+          toast({
+            title: "Error en la Confirmación",
+            description: "Ocurrió un error al registrar tu asistencia. Por favor, intenta de nuevo.",
+            variant: "destructive",
+          });
+        });
     });
   };
 
