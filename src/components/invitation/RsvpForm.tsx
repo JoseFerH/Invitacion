@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useToast } from "@/hooks/use-toast";
 import { submitRsvp, type RsvpState } from '@/app/actions';
 
@@ -28,7 +28,7 @@ export function RsvpForm() {
   const formRef = useRef<HTMLFormElement>(null);
   
   const initialState: RsvpState = { message: '', errors: {}, success: false };
-  const [state, dispatch] = useFormState(submitRsvp, initialState);
+  const [state, dispatch] = useActionState(submitRsvp, initialState);
 
   useEffect(() => {
     if (state.message) {
