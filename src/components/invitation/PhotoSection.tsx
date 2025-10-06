@@ -3,17 +3,14 @@ import { SectionTitle } from "./SectionTitle";
 
 export function PhotoSection() {
   return (
-    <section className="py-8">
-      <div className="text-center p-8 border-2 border-dashed border-accent/20 rounded-lg bg-card/50 backdrop-blur-sm shadow-lg">
-        <div className="flex flex-col items-center justify-center text-muted-foreground">
-            <Camera className="w-12 h-12 mb-4" />
-              <SectionTitle className="text-primary/80 mb-2">Recuerdos Compartidos</SectionTitle>
-              <p className="text-lg font-semibold">
-                AQUÍ PODRÁS SUBIR LAS FOTOS QUE TOMES PARA COMPARTIR TU EXPERIENCIA EN LA FIESTA
-              </p>
-              <p className="mt-2 text-sm">(Función próximamente disponible)</p>
+    <section className="py-8 text-center">
+        <SectionTitle>Recuerdos Compartidos</SectionTitle>
+        <div className="flex flex-col items-center justify-center text-foreground/80">
+            <p className="max-w-md mx-auto">
+              Aquí podrás subir las fotos que tomes en la fiesta, para compartir los recuerdos
+            </p>
+            <p className="mt-2 text-sm font-bold">(Función próximamente disponible)</p>
         </div>
-      </div>
     </section>
   );
 }

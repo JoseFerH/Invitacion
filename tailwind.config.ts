@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['var(--font-montserrat)', 'sans-serif'],
-        headline: ['var(--font-playfair)', 'serif'],
+        body: ['var(--font-raleway)', 'sans-serif'],
+        headline: ['var(--font-cinzel)', 'serif'],
         'great-vibes': ['var(--font-great-vibes)', 'cursive'],
         code: ['monospace'],
       },

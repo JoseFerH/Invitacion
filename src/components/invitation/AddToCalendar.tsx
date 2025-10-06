@@ -35,14 +35,14 @@ export function AddToCalendar() {
   };
 
   return (
-    <div className="-mt-8 text-center">
+    <div className="text-center">
       <Button 
         variant="outline"
         onClick={handleAddToCalendar}
-        className="bg-card/50 backdrop-blur-sm border-primary/20 hover:bg-accent/20 hover:text-accent-foreground shadow-lg"
+        className="bg-transparent border-primary/50 hover:bg-primary/10 text-primary shadow-lg rounded-full"
       >
         <CalendarPlus className="mr-2 h-4 w-4" />
-        Añadir al Calendario
+        Agregar a tu calendario
       </Button>
     </div>
   );

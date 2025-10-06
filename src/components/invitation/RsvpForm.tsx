@@ -4,7 +4,7 @@ import { useState, useRef, useTransition, use } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
-import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { SectionTitle } from "./SectionTitle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -64,12 +64,10 @@ export function RsvpForm() {
       }
       
       try {
-        // 1. Ensure user is authenticated (anonymously)
         if (!auth.currentUser) {
           await signInAnonymously(auth);
         }
-
-        // We need to wait for the user object to be available
+        
         const user = auth.currentUser;
         if (!user) {
           toast({ title: "Error de autenticación", description: "No se pudo autenticar. Intenta de nuevo.", variant: "destructive" });
@@ -79,33 +77,29 @@ export function RsvpForm() {
         const guestData = {
           name: validatedFields.data.name,
           attendees: validatedFields.data.attendees,
-          createdAt: serverTimestamp(), // Use server timestamp for consistency
+          createdAt: serverTimestamp(),
+          guestId: user.uid,
         };
         
-        // Use the user's UID as the document ID for the guest
-        const guestDocRef = doc(firestore, 'guests', user.uid);
+        const guestsCollection = collection(firestore, 'guests');
 
-        // 2. Save data to Firestore using setDoc to control the ID.
-        // The .catch block will handle permission errors.
-        setDoc(guestDocRef, guestData)
-          .then(() => {
-            // 3. Show success and reset form
+        addDoc(guestsCollection, guestData)
+          .then((docRef) => {
             toast({
               title: "¡Confirmación Exitosa!",
               description: `¡Gracias por confirmar, ${validatedFields.data.name}! Tu asistencia ha sido registrada.`,
             });
-            // Store guestId in local storage to be used by song suggestions
             localStorage.setItem('guestId', user.uid);
             formRef.current?.reset();
             setFormState({ name: '', attendees: '1' });
           })
-          .catch((serverError) => { // This will catch network errors or permission errors
+          .catch((serverError) => { 
              const permissionError = new FirestorePermissionError({
-              path: guestDocRef.path,
-              operation: 'create', // or 'update' if overwriting is a concern
+              path: guestsCollection.path,
+              operation: 'create',
               requestResourceData: guestData,
             });
-            errorEmitter.emit('permission-error', permissionError); // Throws the contextual error for debugging
+            errorEmitter.emit('permission-error', permissionError);
           });
 
       } catch (error) {
@@ -122,19 +116,18 @@ export function RsvpForm() {
   return (
     <section className="py-8">
       <SectionTitle>Confirmar Asistencia</SectionTitle>
-      <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 mt-8 p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-accent/20 shadow-xl">
-        <p className='text-sm text-foreground/70 text-left -mb-2'>Confirma tu asistencia para poder sugerir canciones.</p>
+      <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 mt-8">
         <div className="space-y-2 text-left font-body">
-          <Label htmlFor="name" className="text-primary font-semibold">Nombre completo del invitado principal</Label>
+          <Label htmlFor="name" className="text-primary font-semibold">Nombre completo del invitado principal</Label>          
           <Input
             id="name"
             name="name"
-            placeholder="Ej. Gabriela Alvarado"
+            placeholder="Tu nombre y apellido"
             onChange={handleInputChange}
             value={formState.name}
             aria-invalid={!!errors?.name}
             aria-describedby="name-error"
-            className="bg-background/80"
+            className="bg-background/80 border-primary/50 text-lg"
           />
           {errors?.name && (
             <p id="name-error" className="text-sm text-destructive">{errors.name.join(', ')}</p>
@@ -143,7 +136,7 @@ export function RsvpForm() {
         <div className="space-y-2 text-left font-body">
           <Label htmlFor="attendees" className="text-primary font-semibold">Número de asistentes (incluyéndote)</Label>
            <Select name="attendees" value={formState.attendees} onValueChange={handleSelectChange}>
-            <SelectTrigger id="attendees" aria-invalid={!!errors?.attendees} aria-describedby="attendees-error" className="bg-background/80">
+            <SelectTrigger id="attendees" aria-invalid={!!errors?.attendees} aria-describedby="attendees-error" className="bg-background/80 border-primary/50 text-lg">
               <SelectValue placeholder="Selecciona el número de personas" />
             </SelectTrigger>
             <SelectContent>
@@ -156,7 +149,7 @@ export function RsvpForm() {
             <p id="attendees-error" className="text-sm text-destructive">{errors.attendees.join(', ')}</p>
           )}
         </div>
-        <Button type="submit" disabled={isSubmitting} className="w-full mt-4 bg-accent hover:bg-accent/90 text-accent-foreground font-bold">
+        <Button type="submit" disabled={isSubmitting} size="lg" className="w-full mt-4 bg-primary hover:bg-accent text-primary-foreground hover:text-accent-foreground font-bold rounded-full">
           {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
           {isSubmitting ? 'Enviando...' : 'Confirmar Asistencia'}
         </Button>

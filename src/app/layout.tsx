@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
-import { Playfair_Display, Great_Vibes, Montserrat } from 'next/font/google';
+import { Cinzel, Great_Vibes, Raleway } from 'next/font/google';
 import { FirebaseClientProvider } from "@/firebase/client-provider";
 
-const playfair = Playfair_Display({
+const cinzel = Cinzel({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  variable: '--font-cinzel',
   display: 'swap',
 });
 
@@ -17,9 +17,9 @@ const greatVibes = Great_Vibes({
   display: 'swap',
 });
 
-const montserrat = Montserrat({
+const raleway = Raleway({
   subsets: ['latin'],
-  variable: '--font-montserrat',
+  variable: '--font-raleway',
   display: 'swap',
 })
 
@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${playfair.variable} ${greatVibes.variable} ${montserrat.variable}`}>
+    <html lang="es" className={`${cinzel.variable} ${greatVibes.variable} ${raleway.variable}`}>
       <body className="font-body antialiased">
         <FirebaseClientProvider>
           {children}
