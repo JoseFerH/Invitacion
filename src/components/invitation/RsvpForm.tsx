@@ -69,12 +69,12 @@ export function RsvpForm() {
         </div>
         <div className="space-y-2 text-left font-body">
           <Label htmlFor="attendees" className="text-primary font-semibold">Número de asistentes (incluyéndote)</Label>
-           <Select name="attendees">
+           <Select name="attendees" defaultValue="1">
             <SelectTrigger id="attendees" aria-invalid={!!state.errors?.attendees} aria-describedby="attendees-error" className="bg-background/80">
               <SelectValue placeholder="Selecciona el número de personas" />
             </SelectTrigger>
             <SelectContent>
-              {[1, 2, 3, 4, 5].map(num => (
+              {Array.from({ length: 20 }, (_, i) => i + 1).map(num => (
                 <SelectItem key={num} value={String(num)}>{num}</SelectItem>
               ))}
             </SelectContent>

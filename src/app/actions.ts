@@ -1,8 +1,9 @@
 'use server';
 
 import { z } from 'zod';
+import { rsvpFlow } from '@/ai/flows/rsvp-flow';
 // Assume these flows exist for Google Sheets integration
-// import { rsvpFlow, songSuggestionFlow } from '@/ai/flows';
+// import { songSuggestionFlow } from '@/ai/flows';
 
 const RsvpSchema = z.object({
   name: z.string().min(2, { message: 'Tu nombre es requerido.' }),
@@ -35,9 +36,8 @@ export async function submitRsvp(prevState: RsvpState, formData: FormData): Prom
   const { name, attendees } = validatedFields.data;
 
   try {
-    console.log(`RSVP received: Name - ${name}, Attendees - ${attendees}`);
-    // In a real scenario, you would call the Genkit flow here to save to Google Sheets:
-    // await rsvpFlow.run({ name, attendees });
+    // Call the Genkit flow to save to Google Sheets
+    await rsvpFlow({ name, attendees });
 
     return { message: `¡Gracias por confirmar, ${name}! Tu asistencia ha sido registrada.`, success: true };
   } catch (error) {
