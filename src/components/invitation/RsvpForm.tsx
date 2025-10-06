@@ -34,6 +34,14 @@ export function RsvpForm() {
   const [formState, setFormState] = useState<RsvpFormState>({ name: '', attendees: '1' });
   const [errors, setErrors] = useState<{ name?: string[]; attendees?: string[] } | null>(null);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState(prev => ({...prev, name: e.target.value }));
+  };
+
+  const handleSelectChange = (value: string) => {
+    setFormState(prev => ({...prev, attendees: value }));
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
@@ -50,70 +58,55 @@ export function RsvpForm() {
     setErrors(null);
 
     startSubmitTransition(async () => {
-      // 1. Ensure user is authenticated (anonymously)
-      let currentUser = auth.currentUser;
-      if (!currentUser) {
-        try {
-            const userCredential = await signInAnonymously(auth);
-            currentUser = userCredential.user;
-        } catch (error) {
-             console.error('Anonymous sign-in failed:', error);
-             toast({
-                title: "Error de Autenticación",
-                description: "No se pudo iniciar sesión anónimamente para confirmar. Revisa tu conexión.",
-                variant: "destructive",
-            });
-            return;
-        }
+      if (!firestore || !auth) {
+        toast({ title: "Error", description: "Los servicios de Firebase no están disponibles.", variant: "destructive" });
+        return;
       }
-
-      const guestData = {
-        name: validatedFields.data.name,
-        attendees: validatedFields.data.attendees,
-        createdAt: serverTimestamp(), // Use server timestamp for consistency
-      };
       
-      const guestsCollection = collection(firestore, 'guests');
+      try {
+        // 1. Ensure user is authenticated (anonymously)
+        if (!auth.currentUser) {
+          await signInAnonymously(auth);
+        }
 
-      // 2. Save data to Firestore with non-blocking error handling
-      addDoc(guestsCollection, guestData)
-        .then(() => {
-          // 3. Show success and reset form
-          toast({
-            title: "¡Confirmación Exitosa!",
-            description: `¡Gracias por confirmar, ${validatedFields.data.name}! Tu asistencia ha sido registrada.`,
-          });
-          formRef.current?.reset();
-          setFormState({ name: '', attendees: '1' });
-        })
-        .catch(async (serverError) => {
-          // This catch block is specifically for Firestore permission errors.
-          const permissionError = new FirestorePermissionError({
-            path: guestsCollection.path,
-            operation: 'create',
-            requestResourceData: guestData,
+        const guestData = {
+          name: validatedFields.data.name,
+          attendees: validatedFields.data.attendees,
+          createdAt: serverTimestamp(), // Use server timestamp for consistency
+        };
+        
+        const guestsCollection = collection(firestore, 'guests');
+
+        // 2. Save data to Firestore. The .catch block will handle permission errors.
+        addDoc(guestsCollection, guestData)
+          .then(() => {
+            // 3. Show success and reset form
+            toast({
+              title: "¡Confirmación Exitosa!",
+              description: `¡Gracias por confirmar, ${validatedFields.data.name}! Tu asistencia ha sido registrada.`,
+            });
+            formRef.current?.reset();
+            setFormState({ name: '', attendees: '1' });
+          })
+          .catch((serverError) => { // This will catch network errors or permission errors
+             const permissionError = new FirestorePermissionError({
+              path: guestsCollection.path,
+              operation: 'create',
+              requestResourceData: guestData,
+            });
+            errorEmitter.emit('permission-error', permissionError); // Throws the contextual error for debugging
           });
 
-          // Emit the detailed error for debugging. It will be caught by FirebaseErrorListener.
-          errorEmitter.emit('permission-error', permissionError);
-
-          // You can still show a generic message to the user if you want.
-          toast({
-            title: "Error en la Confirmación",
-            description: "Ocurrió un error al registrar tu asistencia. Por favor, intenta de nuevo.",
-            variant: "destructive",
+      } catch (error) {
+           console.error('RSVP submission failed:', error);
+           toast({
+              title: "Error Inesperado",
+              description: "Ocurrió un error al procesar tu confirmación. Revisa tu conexión y vuelve a intentarlo.",
+              variant: "destructive",
           });
-        });
+      }
     });
   };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormState(prev => ({...prev, name: e.target.value }));
-  };
-
-  const handleSelectChange = (value: string) => {
-    setFormState(prev => ({...prev, attendees: value }));
-  }
 
   return (
     <section className="py-8">
@@ -126,6 +119,7 @@ export function RsvpForm() {
             name="name"
             placeholder="Ej. Gabriela Alvarado"
             onChange={handleInputChange}
+            value={formState.name}
             aria-invalid={!!errors?.name}
             aria-describedby="name-error"
             className="bg-background/80"
@@ -136,7 +130,7 @@ export function RsvpForm() {
         </div>
         <div className="space-y-2 text-left font-body">
           <Label htmlFor="attendees" className="text-primary font-semibold">Número de asistentes (incluyéndote)</Label>
-           <Select name="attendees" defaultValue="1" onValueChange={handleSelectChange}>
+           <Select name="attendees" value={formState.attendees} onValueChange={handleSelectChange}>
             <SelectTrigger id="attendees" aria-invalid={!!errors?.attendees} aria-describedby="attendees-error" className="bg-background/80">
               <SelectValue placeholder="Selecciona el número de personas" />
             </SelectTrigger>
