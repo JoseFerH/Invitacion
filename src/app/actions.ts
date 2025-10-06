@@ -2,7 +2,8 @@
 
 import { z } from 'zod';
 import { collection, addDoc } from 'firebase/firestore';
-import { getSdks } from '@/firebase';
+import { getSdks } from '@/firebase/server-sdks';
+import { signInAnonymously } from 'firebase/auth';
 
 const RsvpSchema = z.object({
   name: z.string().min(2, { message: 'Tu nombre es requerido.' }),
@@ -35,7 +36,13 @@ export async function submitRsvp(prevState: RsvpState, formData: FormData): Prom
   const { name, attendees } = validatedFields.data;
 
   try {
-    const { firestore } = getSdks();
+    const { firestore, auth } = getSdks();
+    
+    // Ensure we have an authenticated user (anonymous in this case)
+    if (!auth.currentUser) {
+      await signInAnonymously(auth);
+    }
+    
     const guestsCollection = collection(firestore, 'guests');
     await addDoc(guestsCollection, {
       name: name,
@@ -84,7 +91,10 @@ export async function submitSongSuggestions(songs: SpotifySong[]): Promise<{ suc
 
   try {
     // In a real scenario, this would save to Firestore.
-    const { firestore } = getSdks();
+    const { firestore, auth } = getSdks();
+     if (!auth.currentUser) {
+      await signInAnonymously(auth);
+    }
     const suggestionsCollection = collection(firestore, 'song_suggestions');
     const songTitles = songs.map(s => `${s.name} by ${s.artist}`);
 
