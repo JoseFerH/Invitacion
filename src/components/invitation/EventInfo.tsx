@@ -23,7 +23,7 @@ export function EventInfo() {
         </div>
         <div className="flex flex-col items-center p-6 bg-card/50 rounded-xl shadow-lg backdrop-blur-sm">
           <Shirt className="w-10 h-10 text-accent mb-3" />
-          <h3 className="text-xl font-headline font-bold text-primary">Código de Vestimenta</h3>
+          <h3 className="text-xl font-headline font-bold text-primary">Dress Code:</h3>
           <p className="text-foreground text-lg font-body">Formal Azul</p>
         </div>
       </div>
