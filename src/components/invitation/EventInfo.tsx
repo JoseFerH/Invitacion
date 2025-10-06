@@ -18,7 +18,7 @@ export function EventInfo() {
         <div className="flex flex-col items-center p-6 bg-card/50 rounded-xl shadow-lg backdrop-blur-sm">
           <MapPin className="w-10 h-10 text-accent mb-3" />
           <h3 className="text-xl font-headline font-bold text-primary">Lugar</h3>
-          <p className="text-foreground text-lg font-body">HOTEL TIKAL FUTURA</p>
+          <p className="text-foreground text-lg font-body">Hotel Tikal Futura</p>
           <p className="text-foreground/80 font-body">Salón Menta</p>
         </div>
         <div className="flex flex-col items-center p-6 bg-card/50 rounded-xl shadow-lg backdrop-blur-sm">
