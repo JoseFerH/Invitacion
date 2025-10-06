@@ -38,7 +38,7 @@ export async function submitRsvp(prevState: RsvpState, formData: FormData): Prom
   try {
     const { firestore, auth } = getSdks();
     
-    // Ensure we have an authenticated user (anonymous in this case)
+    // Asegura que tengamos un usuario autenticado (anónimo en este caso)
     if (!auth.currentUser) {
       await signInAnonymously(auth);
     }
