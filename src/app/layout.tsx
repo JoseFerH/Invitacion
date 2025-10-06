@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 import { Playfair_Display, Great_Vibes, Montserrat } from 'next/font/google';
+import { FirebaseClientProvider } from "@/firebase/client-provider";
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -35,8 +36,10 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${playfair.variable} ${greatVibes.variable} ${montserrat.variable}`}>
       <body className="font-body antialiased">
-        {children}
-        <Toaster />
+        <FirebaseClientProvider>
+          {children}
+          <Toaster />
+        </FirebaseClientProvider>
       </body>
     </html>
   );

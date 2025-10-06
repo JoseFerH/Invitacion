@@ -1,9 +1,8 @@
 'use server';
 
 import { z } from 'zod';
-import { rsvpFlow } from '@/ai/flows/rsvp-flow';
-// Assume these flows exist for Google Sheets integration
-// import { songSuggestionFlow } from '@/ai/flows';
+import { collection, addDoc } from 'firebase/firestore';
+import { getSdks } from '@/firebase';
 
 const RsvpSchema = z.object({
   name: z.string().min(2, { message: 'Tu nombre es requerido.' }),
@@ -36,12 +35,17 @@ export async function submitRsvp(prevState: RsvpState, formData: FormData): Prom
   const { name, attendees } = validatedFields.data;
 
   try {
-    // Call the Genkit flow to save to Google Sheets
-    await rsvpFlow({ name, attendees });
+    const { firestore } = getSdks();
+    const guestsCollection = collection(firestore, 'guests');
+    await addDoc(guestsCollection, {
+      name: name,
+      attendees: attendees,
+      createdAt: new Date(),
+    });
 
     return { message: `¡Gracias por confirmar, ${name}! Tu asistencia ha sido registrada.`, success: true };
   } catch (error) {
-    console.error('Error submitting RSVP:', error);
+    console.error('Error submitting RSVP to Firestore:', error);
     return { message: 'Ocurrió un error al registrar tu asistencia. Por favor, intenta de nuevo.', success: false };
   }
 }
@@ -79,10 +83,17 @@ export async function submitSongSuggestions(songs: SpotifySong[]): Promise<{ suc
   }
 
   try {
+    // In a real scenario, this would save to Firestore.
+    const { firestore } = getSdks();
+    const suggestionsCollection = collection(firestore, 'song_suggestions');
     const songTitles = songs.map(s => `${s.name} by ${s.artist}`);
+
+    await addDoc(suggestionsCollection, {
+        suggestions: songTitles,
+        createdAt: new Date()
+    });
+
     console.log('Submitting song suggestions:', songTitles);
-    // In a real scenario, you would call the Genkit flow here to save to Google Sheets:
-    // await songSuggestionFlow.run({ songs: songTitles });
     return { success: true, message: '¡Gracias! Tus sugerencias de canciones han sido enviadas.' };
   } catch (error) {
     console.error('Error submitting song suggestions:', error);
