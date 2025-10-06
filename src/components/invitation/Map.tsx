@@ -12,8 +12,11 @@ export function Map({ center }: MapProps) {
 
   if (!apiKey) {
     return (
-      <div className="flex items-center justify-center h-full bg-secondary text-secondary-foreground p-4 text-center">
-        <p>No se pudo cargar el mapa. La variable de entorno NEXT_PUBLIC_GOOGLE_MAPS_API_KEY no está configurada. Por favor, revisa tu archivo .env.local.</p>
+      <div className="flex items-center justify-center h-full bg-destructive/10 text-destructive p-4 text-center border border-destructive/50 rounded-lg">
+        <div>
+          <p className="font-bold">Error de Configuración del Mapa</p>
+          <p className="text-sm">La variable de entorno `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` no está configurada en tu archivo `.env`. Por favor, añade la clave para que el mapa pueda cargarse.</p>
+        </div>
       </div>
     );
   }
@@ -25,6 +28,7 @@ export function Map({ center }: MapProps) {
         defaultZoom={15}
         mapId="gala-map"
         gestureHandling="cooperative"
+        style={{ borderRadius: 'inherit' }}
       >
         <Marker position={center} />
       </GoogleMap>
