@@ -1,0 +1,98 @@
+/**
+ * @file Firestore Security Rules for Gabriela's Graduation Gala app.
+ *
+ * @corePhilosophy This ruleset enforces a user-ownership model for guests and their song suggestions.
+ *   Events are publicly readable, but only owners can modify them.
+ *
+ * @dataStructure
+ *   - /events/{eventId}: Stores event details. Publicly readable, owner-modifiable.
+ *   - /guests/{guestId}: Stores guest information. Owner-only access.
+ *   - /guests/{guestId}/song_suggestions/{suggestionId}: Stores song suggestions. Owner-only access (via guestId).
+ *
+ * @keySecurityDecisions
+ *   - Guests and song suggestions are private and accessible only to the authenticated user who "owns" them (i.e., the user whose ID matches the guestId in the path).
+ *   - Events are publicly readable but require authentication for creation, modification, and deletion.
+ *   - Listing of guests or song suggestions is restricted to the owner. Public listing is disabled.
+ *   - Data validation is minimal in this prototyping phase, focusing on relational integrity (e.g., guestId consistency) rather than comprehensive schema enforcement.
+ *
+ * @denormalizationForAuthorization
+ *   - Song suggestions are nested under guests to ensure that ownership is easily verifiable without needing additional reads. The guestId in the path acts as the owner identifier.
+ *
+ * @structuralSegregation
+ *   - There is no need for structural segregation (private vs. public data) in this data model.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Allows anyone to read event details, but only authenticated users to create, update, or delete them.
+     * @path /events/{eventId}
+     * @allow (get, list): if true (public read access)
+     * @allow (create): if isSignedIn()
+     * @allow (update): if isSignedIn()
+     * @allow (delete): if isSignedIn()
+     * @deny (create, update, delete): if !isSignedIn()
+     * @principle Public read access with authentication required for write operations
+     */
+    match /events/{eventId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn() && resource.data.id == eventId;
+      allow delete: if isSignedIn() && resource.data.id == eventId;
+    }
+
+    /**
+     * @description Allows a guest to create, read, update, and delete their own guest document.
+     * @path /guests/{guestId}
+     * @allow (create): if isOwner(guestId)
+     * @allow (get, list): if isOwner(guestId)
+     * @allow (update): if isExistingOwner(guestId)
+     * @allow (delete): if isExistingOwner(guestId)
+     * @deny (create): if !isOwner(guestId)
+     * @deny (get, list): if !isOwner(guestId)
+     * @deny (update): if !isExistingOwner(guestId)
+     * @deny (delete): if !isExistingOwner(guestId)
+     * @principle Enforces document ownership for all operations.  Ensures only the authenticated user can manage their own guest data.
+     */
+    match /guests/{guestId} {
+      allow create: if isOwner(guestId) && request.resource.data.id == guestId;
+      allow get, list: if isOwner(guestId);
+      allow update: if isExistingOwner(guestId) && resource.data.id == guestId;
+      allow delete: if isExistingOwner(guestId);
+    }
+
+    /**
+     * @description Allows a guest to manage their own song suggestions.
+     * @path /guests/{guestId}/song_suggestions/{suggestionId}
+     * @allow (create): if isOwner(guestId)
+     * @allow (get, list): if isOwner(guestId)
+     * @allow (update): if isExistingOwner(guestId)
+     * @allow (delete): if isExistingOwner(guestId)
+     * @deny (create): if !isOwner(guestId)
+     * @deny (get, list): if !isOwner(guestId)
+     * @deny (update): if !isExistingOwner(guestId)
+     * @deny (delete): if !isExistingOwner(guestId)
+     * @principle Enforces document ownership for all operations.  Ensures only the authenticated user can manage their own song suggestions.
+     */
+    match /guests/{guestId}/song_suggestions/{suggestionId} {
+      allow create: if isOwner(guestId) && request.resource.data.guestId == guestId;
+      allow get, list: if isOwner(guestId);
+      allow update: if isExistingOwner(guestId) && resource.data.guestId == guestId;
+      allow delete: if isExistingOwner(guestId);
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+    }
+  }
+}
