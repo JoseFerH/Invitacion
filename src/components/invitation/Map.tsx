@@ -1,3 +1,4 @@
+
 "use client";
 
 import { APIProvider, Map as GoogleMap, Marker } from "@vis.gl/react-google-maps";
@@ -11,8 +12,8 @@ export function Map({ center }: MapProps) {
 
   if (!apiKey) {
     return (
-      <div className="flex items-center justify-center h-full bg-secondary text-secondary-foreground">
-        <p>No se pudo cargar el mapa. La clave de API de Google Maps no está configurada.</p>
+      <div className="flex items-center justify-center h-full bg-secondary text-secondary-foreground p-4 text-center">
+        <p>No se pudo cargar el mapa. La variable de entorno NEXT_PUBLIC_GOOGLE_MAPS_API_KEY no está configurada. Por favor, revisa tu archivo .env.local.</p>
       </div>
     );
   }
