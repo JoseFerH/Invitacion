@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef, useTransition } from 'react';
+import { useState, useRef, useTransition, use } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { SectionTitle } from "./SectionTitle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -69,29 +69,40 @@ export function RsvpForm() {
           await signInAnonymously(auth);
         }
 
+        // We need to wait for the user object to be available
+        const user = auth.currentUser;
+        if (!user) {
+          toast({ title: "Error de autenticación", description: "No se pudo autenticar. Intenta de nuevo.", variant: "destructive" });
+          return;
+        }
+
         const guestData = {
           name: validatedFields.data.name,
           attendees: validatedFields.data.attendees,
           createdAt: serverTimestamp(), // Use server timestamp for consistency
         };
         
-        const guestsCollection = collection(firestore, 'guests');
+        // Use the user's UID as the document ID for the guest
+        const guestDocRef = doc(firestore, 'guests', user.uid);
 
-        // 2. Save data to Firestore. The .catch block will handle permission errors.
-        addDoc(guestsCollection, guestData)
+        // 2. Save data to Firestore using setDoc to control the ID.
+        // The .catch block will handle permission errors.
+        setDoc(guestDocRef, guestData)
           .then(() => {
             // 3. Show success and reset form
             toast({
               title: "¡Confirmación Exitosa!",
               description: `¡Gracias por confirmar, ${validatedFields.data.name}! Tu asistencia ha sido registrada.`,
             });
+            // Store guestId in local storage to be used by song suggestions
+            localStorage.setItem('guestId', user.uid);
             formRef.current?.reset();
             setFormState({ name: '', attendees: '1' });
           })
           .catch((serverError) => { // This will catch network errors or permission errors
              const permissionError = new FirestorePermissionError({
-              path: guestsCollection.path,
-              operation: 'create',
+              path: guestDocRef.path,
+              operation: 'create', // or 'update' if overwriting is a concern
               requestResourceData: guestData,
             });
             errorEmitter.emit('permission-error', permissionError); // Throws the contextual error for debugging
@@ -112,6 +123,7 @@ export function RsvpForm() {
     <section className="py-8">
       <SectionTitle>Confirmar Asistencia</SectionTitle>
       <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 mt-8 p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-accent/20 shadow-xl">
+        <p className='text-sm text-foreground/70 text-left -mb-2'>Confirma tu asistencia para poder sugerir canciones.</p>
         <div className="space-y-2 text-left font-body">
           <Label htmlFor="name" className="text-primary font-semibold">Nombre completo del invitado principal</Label>
           <Input

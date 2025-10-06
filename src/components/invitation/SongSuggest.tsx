@@ -9,10 +9,12 @@ import { SectionTitle } from "./SectionTitle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Music, Search, Trash2, Loader2, PartyPopper } from "lucide-react";
+import { Music, Search, Trash2, Loader2, PartyPopper, AlertCircle } from "lucide-react";
+import { useAuth } from "@/firebase";
 
 export function SongSuggest() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [query, setQuery] = useState("");
   const debouncedQuery = useDebounce(query, 300);
   const [isSearching, startSearchTransition] = useTransition();
@@ -20,6 +22,15 @@ export function SongSuggest() {
 
   const [searchResults, setSearchResults] = useState<SpotifySong[]>([]);
   const [selectedSongs, setSelectedSongs] = useState<SpotifySong[]>([]);
+  const [guestId, setGuestId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Check local storage for guestId when component mounts
+    const storedGuestId = localStorage.getItem('guestId');
+    if (storedGuestId) {
+      setGuestId(storedGuestId);
+    }
+  }, [user]); // Re-check if user state changes
 
   const handleSearch = useCallback((searchQuery: string) => {
     if (searchQuery.length < 2) {
@@ -53,8 +64,12 @@ export function SongSuggest() {
         toast({ title: "Sin canciones", description: "Agrega al menos una canción a tu lista.", variant: "destructive"});
         return;
     }
+    if (!guestId) {
+        toast({ title: "Confirma tu asistencia", description: "Debes confirmar tu asistencia antes de poder sugerir canciones.", variant: "destructive"});
+        return;
+    }
     startSubmitTransition(async () => {
-      const result = await submitSongSuggestions(selectedSongs);
+      const result = await submitSongSuggestions(guestId, selectedSongs);
       if (result.success) {
         toast({ title: "¡Gracias!", description: result.message, className: "bg-primary text-primary-foreground" });
         setSelectedSongs([]);
@@ -63,6 +78,22 @@ export function SongSuggest() {
       }
     });
   };
+
+  // If user hasn't RSVP'd, show a message.
+  if (!guestId) {
+    return (
+        <section className="py-8 font-body">
+            <SectionTitle>¡Ponle ritmo a la fiesta!</SectionTitle>
+            <div className="mt-6 p-8 bg-card/50 backdrop-blur-sm rounded-2xl shadow-xl border border-accent/20 text-center">
+                <AlertCircle className="mx-auto h-12 w-12 text-primary" />
+                <h3 className="mt-4 text-xl font-bold font-headline text-primary">Confirma tu asistencia primero</h3>
+                <p className="mt-2 text-foreground/80">
+                   Para poder sugerir canciones, primero necesitamos que confirmes tu asistencia en la sección de arriba.
+                </p>
+            </div>
+        </section>
+    );
+  }
 
   return (
     <section className="py-8 font-body">

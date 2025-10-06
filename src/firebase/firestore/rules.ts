@@ -3,20 +3,26 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Deny all reads and writes by default
+    // Default rule: Deny all reads and writes
     match /{document=**} {
       allow read, write: if false;
     }
 
-    // Rule for the 'guests' collection
+    // Guests collection
     match /guests/{guestId} {
-      // Allow any authenticated user (including anonymous) to CREATE a document.
-      // This rule applies to collection-group operations like addDoc().
-      allow create: if request.auth != null;
+      // Allow a user to create their own guest document.
+      // The document ID must match the user's UID.
+      allow create: if request.auth != null && request.auth.uid == guestId;
       
-      // Allow reading a document, you might need this for other features.
-      // For now, it's good practice to have it.
-      allow read: if request.auth != null;
+      // Allow a user to read their own guest document.
+      allow read: if request.auth != null && request.auth.uid == guestId;
+    }
+
+    // Song Suggestions subcollection
+    match /guests/{guestId}/song_suggestions/{suggestionId} {
+      // Allow a user to create song suggestions for themselves.
+      // This rule checks that the user making the request is the owner of the guest document.
+      allow create: if request.auth != null && request.auth.uid == guestId;
     }
   }
 }
