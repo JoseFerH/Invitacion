@@ -29,15 +29,11 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "SongSuggestion",
       "type": "object",
-      "description": "Represents a song suggestion made by a guest for the graduation party.",
+      "description": "Represents a song suggestion made for the graduation party.",
       "properties": {
         "id": {
           "type": "string",
           "description": "Unique identifier for the song suggestion."
-        },
-        "guestId": {
-          "type": "string",
-          "description": "Reference to Guest. (Relationship: Guest 1:N SongSuggestion)"
         },
         "spotifyTrackId": {
           "type": "string",
@@ -46,7 +42,6 @@
       },
       "required": [
         "id",
-        "guestId",
         "spotifyTrackId"
       ]
     },
@@ -123,18 +118,14 @@
         }
       },
       {
-        "path": "/guests/{guestId}/song_suggestions/{suggestionId}",
+        "path": "/song_suggestions/{suggestionId}",
         "definition": {
           "entityName": "SongSuggestion",
           "schema": {
             "$ref": "#/backend/entities/SongSuggestion"
           },
-          "description": "Stores song suggestions made by each guest.  Nesting the song suggestions under the guest to ensure authorization independence.",
+          "description": "Stores all song suggestions made by any visitor.",
           "params": [
-            {
-              "name": "guestId",
-              "description": "Unique identifier for the guest."
-            },
             {
               "name": "suggestionId",
               "description": "Unique identifier for the song suggestion."
@@ -143,6 +134,6 @@
         }
       }
     ],
-    "reasoning": "The Firestore structure is designed to manage event details, guest information, and song suggestions for Gabriela's Graduation Gala. It emphasizes authorization independence and supports the core features of the application.  The key collections are 'events', 'guests', and 'song_suggestions'. The structure supports storing images in Firebase Storage. The design avoids hierarchical authorization dependencies by ensuring that authorization-relevant data is denormalized where necessary.  The primary method of maintaining Authorization Independence is to nest SongSuggestions under Guests, making ownership clear. The event details are stored at the top level for easy access. The guests, along with their RSVP information (attendees), are stored separately, and their song suggestions are nested under their respective documents."
+    "reasoning": "The Firestore structure is designed to manage event details, guest information, and song suggestions. The 'events' collection holds event details. The 'guests' collection stores RSVP information, linked to an authenticated user ID for security. The 'song_suggestions' collection is now a top-level collection to allow any visitor, authenticated or not, to submit song ideas, simplifying the user experience for this feature."
   }
 }

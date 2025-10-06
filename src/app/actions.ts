@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { searchSpotifyFlow } from '@/ai/flows/search-spotify-flow';
-import { collection, addDoc, serverTimestamp, getFirestore, writeBatch, doc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, writeBatch, doc, getFirestore } from 'firebase/firestore';
 import { getSdks } from '@/firebase/server-sdks';
 import { signInAnonymously } from 'firebase/auth';
 
@@ -33,7 +33,7 @@ export async function searchSongs(query: string): Promise<SpotifySong[]> {
 }
 
 
-export async function submitSongSuggestions(guestId: string, songs: SpotifySong[]): Promise<{ success: boolean; message: string }> {
+export async function submitSongSuggestions(songs: SpotifySong[]): Promise<{ success: boolean; message: string }> {
   if (songs.length === 0) {
     return { success: false, message: 'Por favor, selecciona al menos una canción.' };
   }
@@ -41,30 +41,23 @@ export async function submitSongSuggestions(guestId: string, songs: SpotifySong[
   try {
     const { firestore } = getSdks();
     
-    // In a real app, the guestId would come from the user's session after they RSVP.
-    // We are receiving it as a parameter now.
-    if (!guestId) {
-        throw new Error("No se pudo identificar al invitado. Por favor, confirma tu asistencia primero.");
-    }
-
-    const suggestionsCollection = collection(firestore, `guests/${guestId}/song_suggestions`);
+    const suggestionsCollection = collection(firestore, 'song_suggestions');
     const batch = writeBatch(firestore);
     
     songs.forEach(song => {
         const newSuggestionRef = doc(suggestionsCollection); // Create a new doc reference
         batch.set(newSuggestionRef, {
-            guestId: guestId,
             spotifyTrackId: song.id,
             songName: song.name,
             artistName: song.artist,
-            albumArt: song.albumArt, // Save album art for display later
+            albumArt: song.albumArt,
             submittedAt: serverTimestamp(),
         });
     });
 
     await batch.commit();
 
-    console.log(`Saved ${songs.length} song suggestions for guest ${guestId}`);
+    console.log(`Saved ${songs.length} song suggestions`);
     return { success: true, message: '¡Gracias! Tus sugerencias de canciones han sido enviadas.' };
   } catch (error) {
     console.error('Error submitting song suggestions:', error);
