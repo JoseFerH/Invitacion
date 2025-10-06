@@ -3,6 +3,7 @@ import { SectionTitle } from "./SectionTitle";
 import { Map } from "./Map";
 
 export function EventInfo() {
+  // Coordenadas para: HOTEL TIKAL FUTURA, Guatemala
   const location = { lat: 14.6133, lng: -90.5594 };
 
   return (
