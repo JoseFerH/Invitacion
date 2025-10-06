@@ -1,6 +1,11 @@
 'use server';
 
 import { z } from 'zod';
+import { searchSpotifyFlow } from '@/ai/flows/search-spotify-flow';
+import { collection, addDoc, serverTimestamp, getFirestore } from 'firebase/firestore';
+import { getSdks } from '@/firebase/server-sdks';
+import { signInAnonymously } from 'firebase/auth';
+
 // The RSVP logic has been moved to the client-side component (RsvpForm.tsx)
 // to simplify authentication and ensure reliable writes to Firestore.
 // This file is kept for other potential server actions.
@@ -14,21 +19,17 @@ export type SpotifySong = {
 };
 
 export async function searchSongs(query: string): Promise<SpotifySong[]> {
-  console.log(`Searching Spotify for: "${query}"`);
   if (!query) {
     return [];
   }
-  // This is mock data. In a real scenario, this would call a Genkit flow
-  // that interacts with the Spotify API.
-  // const results = await searchSpotifyFlow.run({ query });
-  const mockResults: SpotifySong[] = [
-    { id: '1', name: 'Blinding Lights', artist: 'The Weeknd', albumArt: 'https://picsum.photos/seed/song1/100/100' },
-    { id: '2', name: 'As It Was', artist: 'Harry Styles', albumArt: 'https://picsum.photos/seed/song2/100/100' },
-    { id: '3', name: 'Levitating', artist: 'Dua Lipa', albumArt: 'https://picsum.photos/seed/song3/100/100' },
-    { id: '4', name: 'Good 4 U', artist: 'Olivia Rodrigo', albumArt: 'https://picsum.photos/seed/song4/100/100' },
-    { id: '5', name: 'Peaches', artist: 'Justin Bieber', albumArt: 'https://picsum.photos/seed/song5/100/100' },
-  ];
-  return mockResults.filter(song => song.name.toLowerCase().includes(query.toLowerCase()) || song.artist.toLowerCase().includes(query.toLowerCase()));
+  // This now calls the real Genkit flow which interacts with the Spotify API.
+  try {
+    const results = await searchSpotifyFlow({ query });
+    return results;
+  } catch(e) {
+    console.error(e);
+    return [];
+  }
 }
 
 
@@ -38,15 +39,35 @@ export async function submitSongSuggestions(songs: SpotifySong[]): Promise<{ suc
   }
 
   try {
-    // In a real scenario, this would save to Firestore.
-    // Example of how to get server-side SDKs if needed in the future for other actions:
-    // const { firestore, auth } = getSdks();
-    //  if (!auth.currentUser) {
-    //   await signInAnonymously(auth);
-    // }
-    const songTitles = songs.map(s => `${s.name} by ${s.artist}`);
+    const { auth, firestore } = getSdks();
+    if (!auth.currentUser) {
+     await signInAnonymously(auth);
+    }
+    const user = auth.currentUser;
 
-    console.log('Submitting song suggestions to Firestore (simulation):', songTitles);
+    if (!user) {
+        throw new Error("Authentication failed.");
+    }
+    
+    // We need a guest ID to associate the songs with.
+    // In a real app, you would get this after the user has RSVP'd.
+    // For now, we'll assume a guest document exists or we'll create a placeholder.
+    // This part of the logic might need to be adjusted based on the final app flow.
+    const guestId = user.uid; // Using user's anonymous UID as the guestId
+
+    const suggestionsCollection = collection(firestore, `guests/${guestId}/song_suggestions`);
+    
+    const batch = songs.map(song => addDoc(suggestionsCollection, {
+        guestId: guestId,
+        spotifyTrackId: song.id,
+        songName: song.name, // Storing extra info for easier display
+        artistName: song.artist,
+        submittedAt: serverTimestamp(),
+    }));
+
+    await Promise.all(batch);
+
+    console.log(`Saved ${songs.length} song suggestions for guest ${guestId}`);
     return { success: true, message: '¡Gracias! Tus sugerencias de canciones han sido enviadas.' };
   } catch (error) {
     console.error('Error submitting song suggestions:', error);
