@@ -8,7 +8,7 @@ service cloud.firestore {
     }
     
     // Allow any authenticated user (including anonymous) to create a document in the 'guests' collection.
-    // This rule now correctly allows the 'addDoc' operation used by the RSVP form.
+    // The 'create' operation targets the collection, so the rule should match the collection path.
     match /guests/{guestId} {
       allow create: if request.auth != null;
     }
