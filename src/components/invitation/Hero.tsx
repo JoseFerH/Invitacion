@@ -8,7 +8,7 @@ export function Hero() {
        </div>
 
       <div>
-        <p className="text-3xl md:text-4xl text-foreground/80 font-body font-thin">
+        <p className="text-xl md:text-2xl text-foreground/80 font-body font-thin">
             Te invitamos a celebrar la fiesta de graduación de
         </p>
         <h1 className="text-7xl md:text-9xl font-great-vibes text-primary my-4">
