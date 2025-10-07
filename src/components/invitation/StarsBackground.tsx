@@ -28,7 +28,15 @@ const stars: {
   delay: number;
 }[] = [
   // Ejemplo de cómo añadir una estrella:
-  { asset: 3, top: '1%', left: '8%', size: 80, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 3, top: '1%', left: '8%', size: 110, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 0, top: '1%', right: '8%', size: 110, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 1, top: '3.8%', left: '25%', size: 20, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 4, top: '4.4%', right: '19%', size: 18, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 4, top: '9.4%', right: '5.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 4, top: '15%', left: '5.1%', size: 30, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 4, top: '24.8%', left: '26.9%', size: 28, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 0, top: '24%', right: '8%', size: 140, opacity: 0.8, duration: 4, delay: 0.2 },
+
 ];
 
 export function StarsBackground() {
