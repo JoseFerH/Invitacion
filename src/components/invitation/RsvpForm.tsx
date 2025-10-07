@@ -115,10 +115,10 @@ export function RsvpForm() {
 
   return (
     <section className="py-8">
-      <SectionTitle>Confirmar Asistencia</SectionTitle>
+      <SectionTitle className="!text-[#000f31]">Confirmar Asistencia</SectionTitle>
       <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 mt-8">
         <div className="space-y-2 text-left font-body">
-          <Label htmlFor="name" className="text-primary font-semibold">Nombre completo del invitado principal</Label>          
+          <Label htmlFor="name" className="text-[#000f31] font-semibold">Nombre completo del invitado principal</Label>          
           <Input
             id="name"
             name="name"
@@ -127,19 +127,19 @@ export function RsvpForm() {
             value={formState.name}
             aria-invalid={!!errors?.name}
             aria-describedby="name-error"
-            className="bg-background/80 border-primary/50 text-lg"
+            className="bg-white/80 border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
           />
           {errors?.name && (
             <p id="name-error" className="text-sm text-destructive">{errors.name.join(', ')}</p>
           )}
         </div>
         <div className="space-y-2 text-left font-body">
-          <Label htmlFor="attendees" className="text-primary font-semibold">Número de asistentes (incluyéndote)</Label>
+          <Label htmlFor="attendees" className="text-[#000f31] font-semibold">Número de asistentes (incluyéndote)</Label>
            <Select name="attendees" value={formState.attendees} onValueChange={handleSelectChange}>
-            <SelectTrigger id="attendees" aria-invalid={!!errors?.attendees} aria-describedby="attendees-error" className="bg-background/80 border-primary/50 text-lg">
+            <SelectTrigger id="attendees" aria-invalid={!!errors?.attendees} aria-describedby="attendees-error" className="bg-white/80 border-[#000f31]/50 text-lg text-[#000f31]">
               <SelectValue placeholder="Selecciona el número de personas" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white text-[#000f31]">
               {Array.from({ length: 20 }, (_, i) => i + 1).map(num => (
                 <SelectItem key={num} value={String(num)}>{num}</SelectItem>
               ))}
@@ -149,7 +149,7 @@ export function RsvpForm() {
             <p id="attendees-error" className="text-sm text-destructive">{errors.attendees.join(', ')}</p>
           )}
         </div>
-        <Button type="submit" disabled={isSubmitting} size="lg" className="w-full mt-4 bg-primary hover:bg-accent text-primary-foreground hover:text-accent-foreground font-bold rounded-full">
+        <Button type="submit" disabled={isSubmitting} size="lg" className="w-full mt-4 bg-[#000f31] hover:bg-[#002147] text-white hover:text-white font-bold rounded-full">
           {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
           {isSubmitting ? 'Enviando...' : 'Confirmar Asistencia'}
         </Button>

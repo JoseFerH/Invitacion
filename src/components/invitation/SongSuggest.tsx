@@ -67,14 +67,14 @@ export function SongSuggest() {
 
   return (
     <section className="py-8 font-body">
-        <SectionTitle>¡Ponle ritmo a la fiesta!</SectionTitle>
-        <p className="text-center text-foreground/80 -mt-4 mb-6 max-w-md mx-auto">Sugiere canciones para que el DJ las ponga en la fiesta.</p>
+        <SectionTitle className="!text-[#000f31]">¡Ponle ritmo a la fiesta!</SectionTitle>
+        <p className="text-center text-[#000f31]/80 -mt-4 mb-6 max-w-md mx-auto">Sugiere canciones para que el DJ las ponga en la fiesta.</p>
         
         <div className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
                 {/* Search Column */}
                 <div className="space-y-4">
-                    <Label htmlFor="song-search" className="font-bold text-lg text-primary text-left font-headline">Buscar Canciones</Label>
+                    <Label htmlFor="song-search" className="font-bold text-lg text-[#000f31] text-left font-headline">Buscar Canciones</Label>
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                         <Input
@@ -83,24 +83,24 @@ export function SongSuggest() {
                           placeholder="Busca una canción o artista..."
                           value={query}
                           onChange={e => setQuery(e.target.value)}
-                          className="pl-10 bg-background/80 border-primary/50 text-lg"
+                          className="pl-10 bg-white/80 border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
                         />
                     </div>
-                    <ScrollArea className="h-64 rounded-md border border-primary/30 p-2 bg-background/30">
-                        {isSearching && <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>}
+                    <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-white/30">
+                        {isSearching && <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-[#000f31]" /></div>}
                         {!isSearching && searchResults.length === 0 && (
-                        <div className="flex flex-col justify-center items-center h-full text-muted-foreground">
+                        <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70">
                             <Music className="h-8 w-8 mb-2" />
                             <p className="text-sm">Resultados de la búsqueda aquí</p>
                         </div>
                         )}
                         <div className="space-y-2">
                         {searchResults.map(song => (
-                        <div key={song.id} onClick={() => addSong(song)} className="flex items-center gap-3 p-2 rounded-md hover:bg-primary/10 cursor-pointer">
+                        <div key={song.id} onClick={() => addSong(song)} className="flex items-center gap-3 p-2 rounded-md hover:bg-[#000f31]/10 cursor-pointer">
                             <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
                             <div className="text-left flex-grow overflow-hidden">
-                            <p className="font-semibold truncate text-primary/90">{song.name}</p>
-                            <p className="text-sm text-muted-foreground truncate">{song.artist}</p>
+                            <p className="font-semibold truncate text-[#000f31]">{song.name}</p>
+                            <p className="text-sm text-[#000f31]/70 truncate">{song.artist}</p>
                             </div>
                         </div>
                         ))}
@@ -110,23 +110,23 @@ export function SongSuggest() {
 
                 {/* Selected Songs Column */}
                 <div className="space-y-4">
-                  <h3 className="font-bold text-lg text-primary text-left font-headline">Tu lista de sugerencias ({selectedSongs.length}/10)</h3>
-                  <ScrollArea className="h-64 rounded-md border border-primary/30 p-2 bg-background/30">
+                  <h3 className="font-bold text-lg text-[#000f31] text-left font-headline">Tu lista de sugerencias ({selectedSongs.length}/10)</h3>
+                  <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-white/30">
                       {selectedSongs.length === 0 && (
-                      <div className="flex flex-col justify-center items-center h-full text-muted-foreground">
+                      <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70">
                           <PartyPopper className="h-8 w-8 mb-2" />
                           <p className="text-sm text-center">Tus canciones seleccionadas aparecerán aquí</p>
                       </div>
                       )}
                       <div className="space-y-2">
                       {selectedSongs.map(song => (
-                      <div key={song.id} className="flex items-center gap-3 p-2 rounded-md bg-black/20">
+                      <div key={song.id} className="flex items-center gap-3 p-2 rounded-md bg-black/5">
                           <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
                           <div className="text-left flex-grow overflow-hidden">
-                            <p className="font-semibold truncate text-primary/90">{song.name}</p>
-                            <p className="text-sm text-muted-foreground truncate">{song.artist}</p>
+                            <p className="font-semibold truncate text-[#000f31]">{song.name}</p>
+                            <p className="text-sm text-[#000f31]/70 truncate">{song.artist}</p>
                           </div>
-                          <Button variant="ghost" size="icon" onClick={() => removeSong(song.id)} className="text-muted-foreground hover:text-destructive">
+                          <Button variant="ghost" size="icon" onClick={() => removeSong(song.id)} className="text-[#000f31]/70 hover:text-destructive">
                           <Trash2 className="h-4 w-4" />
                           </Button>
                       </div>
@@ -135,7 +135,7 @@ export function SongSuggest() {
                   </ScrollArea>
                 </div>
             </div>
-            <Button onClick={handleSubmit} disabled={isSubmitting || selectedSongs.length === 0} size="lg" className="w-full md:w-1/2 mx-auto mt-6 bg-primary hover:bg-accent text-primary-foreground hover:text-accent-foreground font-bold rounded-full">
+            <Button onClick={handleSubmit} disabled={isSubmitting || selectedSongs.length === 0} size="lg" className="w-full md:w-1/2 mx-auto mt-6 bg-[#000f31] hover:bg-[#002147] text-white hover:text-white font-bold rounded-full">
               {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Enviando...</> : "Enviar Sugerencias"}
             </Button>
         </div>
