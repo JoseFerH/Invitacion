@@ -14,7 +14,7 @@ const starAssets = [
 // Para añadir una estrella, agrega un nuevo objeto a este array.
 // asset: Elige un estilo de estrella del 0 al 4.
 // Posición: usa 'top' y 'left' (o 'right') con porcentajes.
-// scale: Controla el tamaño (1 es normal, 2 es el doble).
+// size: Controla el tamaño de la estrella en píxeles (ej. 60 es el tamaño estándar).
 // opacity: Transparencia base (0 a 1).
 // duration y delay: Controlan la velocidad y el desfase de la animación de titileo.
 const stars: {
@@ -22,13 +22,13 @@ const stars: {
   top?: string;
   left?: string;
   right?: string;
-  scale: number;
+  size: number;
   opacity: number;
   duration: number;
   delay: number;
 }[] = [
   // Ejemplo de cómo añadir una estrella:
-  { asset: 0, top: '10%', left: '10%', scale: 1, opacity: 0.8, duration: 4, delay: 0.2 },
+  { asset: 3, top: '1%', left: '8%', size: 80, opacity: 0.8, duration: 4, delay: 0.2 },
 ];
 
 export function StarsBackground() {
@@ -42,7 +42,6 @@ export function StarsBackground() {
             top: star.top,
             left: star.left,
             right: star.right,
-            transform: `scale(${star.scale})`,
             opacity: star.opacity,
             animationDuration: `${star.duration}s`,
             animationDelay: `${star.delay}s`,
@@ -51,8 +50,8 @@ export function StarsBackground() {
           <Image
             src={starAssets[star.asset]}
             alt="Estrella decorativa"
-            width={60}
-            height={60}
+            width={star.size}
+            height={star.size}
             unoptimized
           />
         </div>
