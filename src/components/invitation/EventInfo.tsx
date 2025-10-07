@@ -7,7 +7,7 @@ export function EventInfo() {
 
   return (
     <section className="py-8 space-y-8">
-      <SectionTitle>Fiesta</SectionTitle>
+      <SectionTitle className="font-dulcinea">Fiesta</SectionTitle>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-foreground">
         <div className="flex flex-col items-center p-4">
           <Clock className="w-10 h-10 text-accent mb-3" />

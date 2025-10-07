@@ -115,7 +115,7 @@ export function RsvpForm() {
 
   return (
     <section className="py-8">
-      <SectionTitle className="!text-[#000f31]">Confirmar Asistencia</SectionTitle>
+      <SectionTitle className="!text-[#000f31] font-dulcinea">Confirmar Asistencia</SectionTitle>
       <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 mt-8">
         <div className="space-y-2 text-left font-body">
           <Label htmlFor="name" className="text-[#000f31] font-semibold">Nombre completo del invitado principal</Label>          
