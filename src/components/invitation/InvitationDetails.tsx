@@ -8,7 +8,7 @@ const DateSeparator = () => (
 export function InvitationDetails() {
   return (
     <section className="py-8 space-y-6">
-      <div className="flex flex-col md:flex-row items-center justify-center text-center font-headline text-3xl text-primary">
+      <div className="flex flex-col md:flex-row items-center justify-center text-center font-headline text-2xl text-primary">
          <p>SÁBADO</p>
          <DateSeparator />
          <p>08 DE NOVIEMBRE</p>
