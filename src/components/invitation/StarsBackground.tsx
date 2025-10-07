@@ -28,15 +28,17 @@ const stars: {
   delay: number;
 }[] = [
   // Ejemplo de cómo añadir una estrella:
-  { asset: 3, top: '1%', left: '8%', size: 110, opacity: 0.8, duration: 4, delay: 0.2 },
-  { asset: 0, top: '1%', right: '8%', size: 110, opacity: 0.8, duration: 4, delay: 0.2 },
-  { asset: 1, top: '3.8%', left: '25%', size: 20, opacity: 0.8, duration: 4, delay: 0.2 },
-  { asset: 4, top: '4.4%', right: '19%', size: 18, opacity: 0.8, duration: 4, delay: 0.2 },
-  { asset: 4, top: '9.4%', right: '5.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.2 },
-  { asset: 4, top: '15%', left: '5.1%', size: 30, opacity: 0.8, duration: 4, delay: 0.2 },
-  { asset: 4, top: '24.8%', left: '26.9%', size: 28, opacity: 0.8, duration: 4, delay: 0.2 },
-  { asset: 0, top: '24%', right: '8%', size: 140, opacity: 0.8, duration: 4, delay: 0.2 },
-
+  { asset: 3, top: '1%', left: '8%', size: 90, opacity: 0.8, duration: 5, delay: 0.4 },
+  { asset: 0, top: '1%', right: '8%', size: 90, opacity: 0.8, duration: 3, delay: 0.2 },
+  { asset: 1, top: '3.8%', left: '25%', size: 20, opacity: 0.8, duration: 4, delay: 0.5 },
+  { asset: 4, top: '3.7%', right: '19%', size: 18, opacity: 0.8, duration: 9, delay: 0.9 },
+  { asset: 4, top: '9.8%', right: '5.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.3 },
+  { asset: 4, top: '15%', left: '5.1%', size: 30, opacity: 0.8, duration: 2, delay: 0.6 },
+  { asset: 4, top: '23.8%', left: '24.9%', size: 28, opacity: 0.8, duration: 8, delay: 0.2 },
+  { asset: 0, top: '35%', right: '6%', size: 120, opacity: 0.8, duration: 7, delay: 0.7 },
+  { asset: 3, top: '52.5%', left: '12%', size: 60, opacity: 0.8, duration: 4, delay: 0.4 },
+  { asset: 4, top: '53.5%', right: '12%', size: 25, opacity: 0.8, duration: 2, delay: 0.1 },
+  
 ];
 
 export function StarsBackground() {
