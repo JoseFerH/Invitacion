@@ -10,7 +10,7 @@ import { AddToCalendar } from '@/components/invitation/AddToCalendar';
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen w-full overflow-x-hidden bg-background">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-tr from-[#002147] to-[#000f31]">
       <StarsBackground />
 
       <main className="relative z-10 container mx-auto max-w-2xl p-4 sm:p-8 space-y-16 text-center">
