@@ -30,7 +30,8 @@ const stars = [
   { asset: 3, top: '85%', left: '5%', scale: 1.1, opacity: 0.95, duration: 5.8, delay: 2.2 },
   { asset: 4, top: '30%', right: '40%', scale: 0.8, opacity: 0.75, duration: 3.8, delay: 1.1 },
   { asset: 4, top: '65%', left: '35%', scale: 0.9, opacity: 0.9, duration: 6.5, delay: 4.5 },
-  { asset: 0, top: '2%', left: '50%', scale: 0.7, opacity: 0.7, duration: 3.2, delay: 0.1 },
+  // Star that was over the text, moved to top-left
+  { asset: 0, top: '3%', left: '8%', scale: 0.7, opacity: 0.7, duration: 3.2, delay: 0.1 },
   { asset: 1, top: '98%', left: '80%', scale: 0.8, opacity: 0.8, duration: 5.3, delay: 2.8 },
   { asset: 2, top: '55%', left: '55%', scale: 0.6, opacity: 0.6, duration: 7.5, delay: 5 },
   { asset: 3, top: '45%', right: '5%', scale: 1.0, opacity: 0.9, duration: 4.8, delay: 1.3 },
