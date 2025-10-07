@@ -39,8 +39,8 @@ export default function Home() {
         
         <footer className="flex justify-end text-right text-foreground/50 text-sm font-body py-8">
           <div className="flex flex-col items-center">
-            <Image src="/assets/creatisvg.svg" alt="Creati Solutions Logo" width={96} height={48} className="mb-2" />
             <p>Diseñado y elaborado por Creati Solutions</p>
+            <Image src="/assets/creatisvg.svg" alt="Creati Solutions Logo" width={96} height={48} className="mt-2" />
           </div>
         </footer>
       </main>
