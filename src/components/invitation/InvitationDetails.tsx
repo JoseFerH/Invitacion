@@ -16,7 +16,7 @@ export function InvitationDetails() {
          <p>2025</p>
       </div>
       
-      <div className="text-center text-foreground/80 text-lg leading-relaxed max-w-prose mx-auto font-body italic">
+      <div className="text-center text-foreground/80 text-lg leading-relaxed max-w-prose mx-auto font-body italic font-thin">
         <p>
             "Después de años llenos de ideas, colores, trazos y palabras que dieron forma a un sueño, ha llegado el momento de celebrar el resultado de esa dedicación."
         </p>
