@@ -4,7 +4,7 @@ export function Hero() {
   return (
     <header className="py-12 space-y-6">
        <div className="flex justify-center">
-          <Image src="/assets/Sombrerosvg.svg" alt="Gorro de graduación" width={192} height={192} className="text-primary" />
+          <Image src="/assets/Sombrerosvg.svg" alt="Gorro de graduación" width={154} height={154} className="text-primary" />
        </div>
 
       <div>
