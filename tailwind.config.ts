@@ -15,6 +15,7 @@ export default {
         sofia: ['var(--font-sofia)', 'cursive'],
         'great-vibes': ['var(--font-great-vibes)', 'cursive'],
         dulcinea: ['Dulcinea', 'cursive'],
+        lato: ['Lato', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
