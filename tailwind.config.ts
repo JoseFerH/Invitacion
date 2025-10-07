@@ -14,6 +14,7 @@ export default {
         headline: ['var(--font-cinzel)', 'serif'],
         sofia: ['var(--font-sofia)', 'cursive'],
         'great-vibes': ['var(--font-great-vibes)', 'cursive'],
+        dulcinea: ['Dulcinea', 'cursive'],
         code: ['monospace'],
       },
       colors: {
