@@ -1,4 +1,5 @@
 
+import Image from 'next/image';
 import { Hero } from '@/components/invitation/Hero';
 import { InvitationDetails } from '@/components/invitation/InvitationDetails';
 import { EventInfo } from '@/components/invitation/EventInfo';
@@ -36,8 +37,11 @@ export default function Home() {
           <PhotoSection />
         </div>
         
-        <footer className="text-center text-foreground/50 text-sm font-body py-8">
-          <p>Diseñado y ahorado por Creati Solutions</p>
+        <footer className="flex justify-end text-right text-foreground/50 text-sm font-body py-8">
+          <div className="flex flex-col items-center">
+            <Image src="/assets/creatisvg.svg" alt="Creati Solutions Logo" width={80} height={40} className="mb-2" />
+            <p>Diseñado y elaborado por Creati Solutions</p>
+          </div>
         </footer>
       </main>
     </div>
