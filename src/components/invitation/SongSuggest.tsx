@@ -76,17 +76,17 @@ export function SongSuggest() {
                 <div className="space-y-4">
                     <Label htmlFor="song-search" className="font-bold text-lg text-[#000f31] text-left font-headline">Buscar Canciones</Label>
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground text-[#000f31]/70" />
                         <Input
                           id="song-search"
                           type="text"
                           placeholder="Busca una canción o artista..."
                           value={query}
                           onChange={e => setQuery(e.target.value)}
-                          className="pl-10 bg-white/80 border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
+                          className="pl-10 bg-transparent border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
                         />
                     </div>
-                    <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-white/30">
+                    <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-transparent">
                         {isSearching && <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-[#000f31]" /></div>}
                         {!isSearching && searchResults.length === 0 && (
                         <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70">
@@ -111,7 +111,7 @@ export function SongSuggest() {
                 {/* Selected Songs Column */}
                 <div className="space-y-4">
                   <h3 className="font-bold text-lg text-[#000f31] text-left font-headline">Tu lista de sugerencias ({selectedSongs.length}/10)</h3>
-                  <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-white/30">
+                  <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-transparent">
                       {selectedSongs.length === 0 && (
                       <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70">
                           <PartyPopper className="h-8 w-8 mb-2" />

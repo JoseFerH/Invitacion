@@ -127,7 +127,7 @@ export function RsvpForm() {
             value={formState.name}
             aria-invalid={!!errors?.name}
             aria-describedby="name-error"
-            className="bg-white/80 border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
+            className="bg-transparent border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
           />
           {errors?.name && (
             <p id="name-error" className="text-sm text-destructive">{errors.name.join(', ')}</p>
@@ -136,7 +136,7 @@ export function RsvpForm() {
         <div className="space-y-2 text-left font-body">
           <Label htmlFor="attendees" className="text-[#000f31] font-semibold">Número de asistentes (incluyéndote)</Label>
            <Select name="attendees" value={formState.attendees} onValueChange={handleSelectChange}>
-            <SelectTrigger id="attendees" aria-invalid={!!errors?.attendees} aria-describedby="attendees-error" className="bg-white/80 border-[#000f31]/50 text-lg text-[#000f31]">
+            <SelectTrigger id="attendees" aria-invalid={!!errors?.attendees} aria-describedby="attendees-error" className="bg-transparent border-[#000f31]/50 text-lg text-[#000f31]">
               <SelectValue placeholder="Selecciona el número de personas" />
             </SelectTrigger>
             <SelectContent className="bg-white text-[#000f31]">

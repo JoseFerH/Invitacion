@@ -25,15 +25,15 @@ export default function Home() {
 
         <EventInfo />
 
-        <div className="textured-card p-6 sm:p-8 rounded-2xl shadow-2xl">
+        <div className="textured-card p-6 sm:p-8 rounded-2xl">
            <RsvpForm />
         </div>
         
-        <div className="textured-card p-6 sm:p-8 rounded-2xl shadow-2xl">
+        <div className="textured-card p-6 sm:p-8 rounded-2xl">
           <SongSuggest />
         </div>
 
-        <div className="textured-card p-6 sm:p-8 rounded-2xl shadow-2xl">
+        <div className="textured-card p-6 sm:p-8 rounded-2xl">
           <PhotoSection />
         </div>
         
