@@ -11,20 +11,20 @@ export function EventInfo() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="textured-card p-6 rounded-2xl flex flex-col items-center text-center text-[#000f31]">
-          <Clock className="w-10 h-10 text-accent mb-3" />
+          <Clock className="w-10 h-10 text-[#000f31] mb-3" />
           <h3 className="text-xl font-lato font-bold mb-1">Hora</h3>
           <p className="text-lg font-lato">7:30 PM</p>
         </div>
 
         <div className="textured-card p-6 rounded-2xl flex flex-col items-center text-center text-[#000f31]">
-          <MapPin className="w-10 h-10 text-accent mb-3" />
+          <MapPin className="w-10 h-10 text-[#000f31] mb-3" />
           <h3 className="text-xl font-lato font-bold mb-1">Lugar</h3>
           <p className="text-lg font-lato">Tikal Futura</p>
           <p className="text-md text-[#000f31]/80">Salón Menta</p>
         </div>
 
         <div className="textured-card p-6 rounded-2xl flex flex-col items-center text-center text-[#000f31]">
-          <Shirt className="w-10 h-10 text-accent mb-3" />
+          <Shirt className="w-10 h-10 text-[#000f31] mb-3" />
           <h3 className="text-xl font-lato font-bold mb-1">Dress Code</h3>
           <p className="text-lg font-lato">Formal</p>
           <p className="text-md text-[#000f31]/80">Color azul</p>
