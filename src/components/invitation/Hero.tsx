@@ -11,7 +11,7 @@ export function Hero() {
         <p className="text-lg md:text-xl text-foreground/80 font-body">
             Te invitamos a celebrar la fiesta de graduación de
         </p>
-        <h1 className="text-7xl md:text-9xl font-great-vibes text-primary my-4">
+        <h1 className="text-7xl md:text-9xl font-sofia text-primary my-4">
             Gabriela
         </h1>
       </div>

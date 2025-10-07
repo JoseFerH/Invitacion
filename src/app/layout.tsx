@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
-import { Cinzel, Great_Vibes, Raleway } from 'next/font/google';
+import { Cinzel, Raleway, Sofia } from 'next/font/google';
 import { FirebaseClientProvider } from "@/firebase/client-provider";
 
 const cinzel = Cinzel({
@@ -10,10 +10,10 @@ const cinzel = Cinzel({
   display: 'swap',
 });
 
-const greatVibes = Great_Vibes({
+const sofia = Sofia({
   subsets: ['latin'],
   weight: '400',
-  variable: '--font-great-vibes',
+  variable: '--font-sofia',
   display: 'swap',
 });
 
@@ -34,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${cinzel.variable} ${greatVibes.variable} ${raleway.variable}`}>
+    <html lang="es" className={`${cinzel.variable} ${sofia.variable} ${raleway.variable}`}>
       <body className="font-body antialiased">
         <FirebaseClientProvider>
           {children}

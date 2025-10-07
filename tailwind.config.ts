@@ -12,7 +12,7 @@ export default {
       fontFamily: {
         body: ['var(--font-raleway)', 'sans-serif'],
         headline: ['var(--font-cinzel)', 'serif'],
-        'great-vibes': ['var(--font-great-vibes)', 'cursive'],
+        sofia: ['var(--font-sofia)', 'cursive'],
         code: ['monospace'],
       },
       colors: {
