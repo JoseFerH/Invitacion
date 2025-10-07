@@ -1,10 +1,10 @@
-import { GraduationCap } from 'lucide-react';
+import Image from 'next/image';
 
 export function Hero() {
   return (
     <header className="py-12 space-y-6">
        <div className="flex justify-center">
-          <GraduationCap className="w-24 h-24 text-primary" strokeWidth={1} />
+          <Image src="/assets/Sombrerosvg.svg" alt="Gorro de graduación" width={96} height={96} className="text-primary" />
        </div>
 
       <div>
