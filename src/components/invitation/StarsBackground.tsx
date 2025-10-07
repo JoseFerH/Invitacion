@@ -28,7 +28,7 @@ const stars: {
   delay: number;
 }[] = [
   // Ejemplo de cómo añadir una estrella:
-  // { asset: 0, top: '10%', left: '15%', scale: 2, opacity: 0.9, duration: 4, delay: 0 },
+  { asset: 0, top: '10%', left: '10%', scale: 1, opacity: 0.8, duration: 4, delay: 0.2 },
 ];
 
 export function StarsBackground() {
