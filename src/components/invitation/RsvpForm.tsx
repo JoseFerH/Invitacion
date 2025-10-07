@@ -5,7 +5,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { SectionTitle } from "./SectionTitle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -114,9 +113,8 @@ export function RsvpForm() {
   };
 
   return (
-    <section className="py-8">
-      <SectionTitle className="!text-[#000f31] font-dulcinea">Confirmar Asistencia</SectionTitle>
-      <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 mt-8">
+    <section className="pt-2">
+      <form ref={formRef} onSubmit={handleSubmit} className="max-w-md mx-auto space-y-6 mt-2">
         <div className="space-y-2 text-left font-body">
           <Label htmlFor="name" className="text-[#000f31] font-semibold">Nombre completo del invitado principal</Label>          
           <Input

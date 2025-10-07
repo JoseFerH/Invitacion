@@ -5,7 +5,6 @@ import Image from "next/image";
 import { searchSongs, submitSongSuggestions, type SpotifySong } from "@/app/actions";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useToast } from "@/hooks/use-toast";
-import { SectionTitle } from "./SectionTitle";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -66,9 +65,8 @@ export function SongSuggest() {
   };
 
   return (
-    <section className="py-8 font-body">
-        <SectionTitle className="!text-[#000f31] font-dulcinea">¡Ponle ritmo a la fiesta!</SectionTitle>
-        <p className="text-center text-[#000f31]/80 -mt-4 mb-6 max-w-md mx-auto">Sugiere canciones para que el DJ las ponga en la fiesta.</p>
+    <section className="pt-2 font-body">
+        <p className="text-center text-[#000f31]/80 mb-6 max-w-md mx-auto">Sugiere canciones para que el DJ las ponga en la fiesta.</p>
         
         <div className="space-y-6">
             <div className="grid md:grid-cols-2 gap-6">

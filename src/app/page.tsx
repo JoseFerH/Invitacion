@@ -1,4 +1,5 @@
 
+
 import Image from 'next/image';
 import { Hero } from '@/components/invitation/Hero';
 import { InvitationDetails } from '@/components/invitation/InvitationDetails';
@@ -8,6 +9,7 @@ import { SongSuggest } from '@/components/invitation/SongSuggest';
 import { PhotoSection } from '@/components/invitation/PhotoSection';
 import { StarsBackground } from '@/components/invitation/StarsBackground';
 import { AddToCalendar } from '@/components/invitation/AddToCalendar';
+import { SectionTitle } from '@/components/invitation/SectionTitle';
 
 
 export default function Home() {
@@ -24,18 +26,27 @@ export default function Home() {
         </div>
 
         <EventInfo />
-
-        <div className="textured-card p-6 sm:p-8 rounded-2xl">
-           <RsvpForm />
-        </div>
         
-        <div className="textured-card p-6 sm:p-8 rounded-2xl">
-          <SongSuggest />
-        </div>
+        <section>
+          <SectionTitle className="font-dulcinea">Confirmar Asistencia</SectionTitle>
+          <div className="textured-card p-6 sm:p-8 rounded-2xl">
+            <RsvpForm />
+          </div>
+        </section>
+        
+        <section>
+          <SectionTitle className="font-dulcinea">¡Ponle ritmo a la fiesta!</SectionTitle>
+          <div className="textured-card p-6 sm:p-8 rounded-2xl">
+            <SongSuggest />
+          </div>
+        </section>
 
-        <div className="textured-card p-6 sm:p-8 rounded-2xl">
-          <PhotoSection />
-        </div>
+        <section>
+          <SectionTitle className="font-dulcinea">Recuerdos Compartidos</SectionTitle>
+          <div className="textured-card p-6 sm:p-8 rounded-2xl">
+            <PhotoSection />
+          </div>
+        </section>
         
         <footer className="flex justify-end text-right text-foreground/50 text-sm font-body py-8">
           <a href="https://www.instagram.com/creatisolutionsgt?igsh=MWNkb3RrMnIwMGtlaA==" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center hover:text-primary transition-colors">
