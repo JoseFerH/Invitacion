@@ -13,6 +13,7 @@ export default {
         body: ['var(--font-raleway)', 'sans-serif'],
         headline: ['var(--font-cinzel)', 'serif'],
         sofia: ['var(--font-sofia)', 'cursive'],
+        'great-vibes': ['var(--font-great-vibes)', 'cursive'],
         code: ['monospace'],
       },
       colors: {

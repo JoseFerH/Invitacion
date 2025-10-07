@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
-import { Cinzel, Raleway, Sofia } from 'next/font/google';
+import { Cinzel, Raleway, Sofia, Great_Vibes } from 'next/font/google';
 import { FirebaseClientProvider } from "@/firebase/client-provider";
 
 const cinzel = Cinzel({
@@ -23,6 +23,14 @@ const raleway = Raleway({
   display: 'swap',
 })
 
+const greatVibes = Great_Vibes({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-great-vibes',
+  display: 'swap',
+});
+
+
 export const metadata: Metadata = {
   title: "Gabriela's Graduation Gala",
   description: "Interactive invitation for the graduation of Gabriela Alvarado Durante",
@@ -34,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${cinzel.variable} ${sofia.variable} ${raleway.variable}`}>
+    <html lang="es" className={`${cinzel.variable} ${sofia.variable} ${raleway.variable} ${greatVibes.variable}`}>
       <body className="font-body antialiased">
         <FirebaseClientProvider>
           {children}
