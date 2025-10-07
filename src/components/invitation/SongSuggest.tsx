@@ -83,7 +83,7 @@ export function SongSuggest() {
                           placeholder="Busca una canción o artista..."
                           value={query}
                           onChange={e => setQuery(e.target.value)}
-                          className="pl-10 bg-transparent border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
+                          className="pl-10 bg-white border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
                         />
                     </div>
                     <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-transparent">
