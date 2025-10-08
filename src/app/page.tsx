@@ -1,5 +1,4 @@
 
-
 import Image from 'next/image';
 import { Hero } from '@/components/invitation/Hero';
 import { InvitationDetails } from '@/components/invitation/InvitationDetails';
@@ -50,7 +49,7 @@ export default function Home() {
         
         <footer className="flex justify-end text-right text-foreground/50 text-sm font-body py-8">
           <a href="https://www.instagram.com/creatisolutionsgt?igsh=MWNkb3RrMnIwMGtlaA==" target="_blank" rel="noopener noreferrer" className="flex flex-col items-center hover:text-primary transition-colors">
-            <p>Diseñado y elaborado por Creati Solutions</p>
+            <p>Diseñado y elaborado por:</p>
             <Image src="/assets/creatisvg.svg" alt="Creati Solutions Logo" width={144} height={72} className="mt-2" />
           </a>
         </footer>

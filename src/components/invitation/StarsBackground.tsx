@@ -35,7 +35,13 @@ const stars: {
   { asset: 4, top: '9.8%', right: '5.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.3 },
   { asset: 4, top: '15%', left: '5.1%', size: 30, opacity: 0.8, duration: 2, delay: 0.6 },
   { asset: 4, top: '23.8%', left: '24.9%', size: 28, opacity: 0.8, duration: 8, delay: 0.2 },
-  { asset: 0, top: '35%', right: '6%', size: 120, opacity: 0.8, duration: 7, delay: 0.7 },
+  { asset: 0, top: '27%', right: '6%', size: 120, opacity: 0.8, duration: 7, delay: 0.7 },
+
+  { asset: 3, top: '45.8%', right: '8.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.3 },
+  { asset: 0, top: '47%', left: '5.1%', size:49, opacity: 0.8, duration: 2, delay: 0.6 },
+  { asset: 4, top: '58.8%', left: '9.9%', size: 28, opacity: 0.8, duration: 8, delay: 0.2 },
+  { asset: 1, top: '61.8%', right: '6%', size: 30, opacity: 0.8, duration: 7, delay: 0.7 },
+  
   { asset: 3, top: '52.5%', left: '12%', size: 60, opacity: 0.8, duration: 4, delay: 0.4 },
   { asset: 4, top: '53.5%', right: '12%', size: 25, opacity: 0.8, duration: 2, delay: 0.1 },
   { asset: 0, top: '94%', right: '6%', size: 75, opacity: 0.8, duration: 7, delay: 0.7 },
