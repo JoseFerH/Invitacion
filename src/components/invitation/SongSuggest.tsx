@@ -39,6 +39,7 @@ export function SongSuggest() {
   const addSong = (song: SpotifySong) => {
     if (!selectedSongs.find(s => s.id === song.id) && selectedSongs.length < 10) {
       setSelectedSongs(prev => [...prev, song]);
+      setQuery(""); // Limpiar el campo de búsqueda
     } else if (selectedSongs.length >= 10) {
       toast({ title: "Límite alcanzado", description: "Puedes sugerir un máximo de 10 canciones.", variant: "destructive"});
     }
