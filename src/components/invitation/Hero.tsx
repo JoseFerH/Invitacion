@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 export function Hero() {
   return (
-    <header className="py-12 space-y-10">
+    <header className="pt-12 space-y-10">
       <div className="flex justify-center">
         <Image
           src="/assets/Sombrerosvg.svg"
@@ -14,7 +14,7 @@ export function Hero() {
       </div>
 
       <div>
-        <p className="text-2xl md:text-2xl text-foreground/80 font-lato font-light mt-20">
+        <p className="text-2xl md:text-2xl text-foreground/80 font-lato font-light">
           Te invitamos a celebrar la fiesta de graduación de
         </p>
         <div className="flex justify-center my-12">

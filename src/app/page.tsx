@@ -16,7 +16,7 @@ export default function Home() {
     <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-r from-[#002147] to-[#000f31]">
       <StarsBackground />
 
-      <main className="relative z-10 container mx-auto max-w-2xl p-4 sm:p-8 space-y-16 text-center">
+      <main className="relative z-10 container mx-auto max-w-2xl p-4 sm:p-8 space-y-8 text-center">
         <Hero />
         
         <div className="space-y-8">
