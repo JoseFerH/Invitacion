@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 35 49.81">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0" y1="24.91" x2="35" y2="24.91" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#002147"/>
+      <stop offset="1" stop-color="#000f31"/>
+    </linearGradient>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <path class="cls-1" d="M18.67,0c12.78,1.09,20.34,14.52,14.12,26.04-4.13,7.65-9.46,14.96-13.69,22.59-.53,1.15-1.8,1.68-2.71.59L2.02,25.65C-3.97,14.13,4.07.6,16.92,0h1.75ZM23.69,11.32c-4.43-4.43-12.06-2.87-14.34,2.96-2.87,7.32,4.48,14.37,11.72,11.23,5.58-2.42,6.92-9.89,2.62-14.19Z"/>
+  </g>
+</svg>

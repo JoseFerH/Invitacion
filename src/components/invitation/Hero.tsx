@@ -17,9 +17,15 @@ export function Hero() {
         <p className="text-2xl md:text-2xl text-foreground/80 font-lato font-light mt-10">
           Te invitamos a celebrar la fiesta de graduación de
         </p>
-        <h1 className="text-8xl md:text-8xl font-dulcinea text-primary my-20 tracking-wider">
-          Gabriela
-        </h1>
+        <div className="flex justify-center my-12">
+            <Image
+                src="/assets/Recurso 4svg.svg"
+                alt="Gabriela"
+                width={500}
+                height={200}
+                className="w-full max-w-lg"
+            />
+        </div>
       </div>
 
       <div className="max-w-xl mx-auto text-foreground/90 font-body">
@@ -30,4 +36,3 @@ export function Hero() {
     </header>
   );
 }
-
