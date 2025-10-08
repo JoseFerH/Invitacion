@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     description: "Te invito a celebrar mi graduación. ¡Será una noche inolvidable!",
     images: [
       {
-        url: 'https://storage.googleapis.com/proud-booster-424814-p0.appspot.com/miniatura%203_Mesa%20de%20trabajo%201.jpg',
+        url: 'https://storage.googleapis.com/proud-booster-424814-p0.appspot.com/miniatura3_Mesadetrabajo1.jpg',
         width: 1200,
         height: 630,
         alt: "Invitación a la Gala de Graduación de Gabriela",
