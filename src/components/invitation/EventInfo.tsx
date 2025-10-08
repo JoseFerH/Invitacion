@@ -6,7 +6,7 @@ export function EventInfo() {
   const location = { lat: 14.622661818867536, lng: -90.55407579836148 };
 
   return (
-    <section className="py-8 space-y-12">
+    <section className="py-8 space-y-6">
       <SectionTitle className="font-dulcinea">Fiesta</SectionTitle>
       
       <div className="grid grid-cols-3 gap-2 sm:gap-6">
@@ -31,7 +31,7 @@ export function EventInfo() {
         </div>
       </div>
       
-      <div className="rounded-lg overflow-hidden border border-border h-80 shadow-2xl">
+      <div className="rounded-lg overflow-hidden border border-border h-80 shadow-2xl mt-12">
         <Map center={location} />
       </div>
     </section>
