@@ -9,13 +9,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, Users, Music, Loader2 } from 'lucide-react';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable';
 import { useMemo } from 'react';
-
-// Extend jsPDF with the autoTable plugin
-interface jsPDFWithAutoTable extends jsPDF {
-  autoTable: (options: any) => jsPDF;
-}
 
 // Define data types for guests and songs
 type Guest = {
@@ -52,14 +47,14 @@ export default function AdminPage() {
 
   const handleExportGuestsPDF = () => {
     if (!guests || guests.length === 0) return;
-    const doc = new jsPDF() as jsPDFWithAutoTable;
+    const doc = new jsPDF();
     
     doc.setFontSize(18);
     doc.text('Lista de Invitados - Gala de Graduación', 14, 22);
     doc.setFontSize(11);
     doc.text(`Total de Asistentes Confirmados: ${totalAttendees}`, 14, 30);
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: 35,
       head: [['Nombre', 'Asistentes', 'Fecha de Confirmación']],
       body: guests.map(guest => [
@@ -75,12 +70,12 @@ export default function AdminPage() {
 
   const handleExportSongsPDF = () => {
     if (!songs || songs.length === 0) return;
-    const doc = new jsPDF() as jsPDFWithAutoTable;
+    const doc = new jsPDF();
     
     doc.setFontSize(18);
     doc.text('Sugerencias de Canciones - Gala de Graduación', 14, 22);
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: 35,
       head: [['Canción', 'Artista', 'Fecha de Sugerencia']],
       body: songs.map(song => [
@@ -95,7 +90,7 @@ export default function AdminPage() {
   };
 
   const handleExportAllPDF = () => {
-    const doc = new jsPDF() as jsPDFWithAutoTable;
+    const doc = new jsPDF();
     
     doc.setFontSize(18);
     doc.text('Reporte de Gala de Graduación', 14, 22);
@@ -104,7 +99,7 @@ export default function AdminPage() {
 
     // Guests Table
     if (guests && guests.length > 0) {
-      doc.autoTable({
+      autoTable(doc, {
         startY: 35,
         head: [['Nombre', 'Asistentes', 'Fecha de Confirmación']],
         body: guests.map(guest => [
@@ -120,11 +115,13 @@ export default function AdminPage() {
 
     // Songs Table
     if (songs && songs.length > 0) {
-      const songsTableStartY = (doc as any).lastAutoTable.finalY + 15;
+      const lastTable = (doc as any).lastAutoTable;
+      const songsTableStartY = lastTable ? lastTable.finalY + 15 : 50;
+
       doc.setFontSize(16);
       doc.text('Sugerencias de Canciones', 14, songsTableStartY);
       
-      doc.autoTable({
+      autoTable(doc, {
         startY: songsTableStartY + 5,
         head: [['Canción', 'Artista', 'Fecha de Sugerencia']],
         body: songs.map(song => [
