@@ -135,11 +135,9 @@ body {
   }
 }
 
-/* Estilo para las tarjetas con textura de puntos sutil */
+/* Estilo para las tarjetas con fondo blanco sólido */
 .textured-card {
   background-color: #ffffff;
-  background-image: radial-gradient(hsl(var(--background) / 0.15) 1px, transparent 1px);
-  background-size: 8px 8px;
   border: 1px solid hsl(var(--border) / 0.2);
 }
 
