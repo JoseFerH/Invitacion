@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemoFirebase } from '@/firebase/provider';
 import { useCollection } from '@/firebase/firestore/use-collection';
 import { useFirestore } from '@/firebase';
 import { collection, query, orderBy } from 'firebase/firestore';
@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, Users, Music, Loader2 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { useMemo } from 'react';
 
 // Extend jsPDF with the autoTable plugin
 interface jsPDFWithAutoTable extends jsPDF {
@@ -34,11 +35,11 @@ export default function AdminPage() {
   const firestore = useFirestore();
 
   // Memoize Firestore queries to prevent re-renders
-  const guestsQuery = useMemo(() => 
+  const guestsQuery = useMemoFirebase(() => 
     firestore ? query(collection(firestore, 'guests'), orderBy('createdAt', 'desc')) : null
   , [firestore]);
   
-  const songsQuery = useMemo(() =>
+  const songsQuery = useMemoFirebase(() =>
     firestore ? query(collection(firestore, 'song_suggestions'), orderBy('submittedAt', 'desc')) : null
   , [firestore]);
 
