@@ -19,7 +19,7 @@ export default function Home() {
       <main className="relative z-10 container mx-auto max-w-2xl p-4 sm:p-8 space-y-16 text-center">
         <Hero />
         
-        <div className="space-y-8">
+        <div className="space-y-8 -mt-8">
           <InvitationDetails />
           <AddToCalendar />
         </div>
