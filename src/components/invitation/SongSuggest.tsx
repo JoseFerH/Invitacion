@@ -8,8 +8,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Label } from "@/components/ui/label";
-import { Music, Search, Trash2, Loader2, PartyPopper } from "lucide-react";
+import { Music, Search, Trash2, Loader2, PartyPopper, ListMusic } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 export function SongSuggest() {
   const { toast } = useToast();
@@ -40,6 +41,7 @@ export function SongSuggest() {
     if (!selectedSongs.find(s => s.id === song.id) && selectedSongs.length < 10) {
       setSelectedSongs(prev => [...prev, song]);
       setQuery(""); // Limpiar el campo de búsqueda
+      setSearchResults([]); // Limpiar resultados
     } else if (selectedSongs.length >= 10) {
       toast({ title: "Límite alcanzado", description: "Puedes sugerir un máximo de 10 canciones.", variant: "destructive"});
     }
@@ -67,77 +69,87 @@ export function SongSuggest() {
 
   return (
     <section className="pt-2 font-body">
-        <p className="text-center text-[#000f31]/80 mb-6 max-w-md mx-auto">Sugiere canciones para que el DJ las ponga en la fiesta.</p>
+      <p className="text-center text-[#000f31]/80 mb-6 max-w-md mx-auto">Sugiere canciones para que el DJ las ponga en la fiesta.</p>
+      
+      <Tabs defaultValue="search" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 bg-[#000f31]/10">
+          <TabsTrigger value="search"><Search className="mr-2" /> Buscar</TabsTrigger>
+          <TabsTrigger value="list">
+            <ListMusic className="mr-2" />
+            Tu Lista 
+            <Badge variant="secondary" className="ml-2 rounded-full">{selectedSongs.length}</Badge>
+          </TabsTrigger>
+        </TabsList>
         
-        <div className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-                {/* Search Column */}
-                <div className="space-y-4">
-                    <Label htmlFor="song-search" className="font-bold text-lg text-[#000f31] text-left font-headline">Buscar Canciones</Label>
-                    <div className="relative">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground text-[#000f31]/70" />
-                        <Input
-                          id="song-search"
-                          type="text"
-                          placeholder="Busca una canción o artista..."
-                          value={query}
-                          onChange={e => setQuery(e.target.value)}
-                          className="pl-10 bg-white border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
-                        />
-                    </div>
-                    <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-transparent">
-                        {isSearching && <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-[#000f31]" /></div>}
-                        {!isSearching && searchResults.length === 0 && (
-                        <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70">
-                            <Music className="h-8 w-8 mb-2" />
-                            <p className="text-sm">Resultados de la búsqueda aquí</p>
-                        </div>
-                        )}
-                        <div className="space-y-2">
-                        {searchResults.map(song => (
-                        <div key={song.id} onClick={() => addSong(song)} className="flex items-center gap-3 p-2 rounded-md hover:bg-[#000f31]/10 cursor-pointer">
-                            <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
-                            <div className="text-left flex-grow overflow-hidden">
-                            <p className="font-semibold truncate text-[#000f31]">{song.name}</p>
-                            <p className="text-sm text-[#000f31]/70 truncate">{song.artist}</p>
-                            </div>
-                        </div>
-                        ))}
-                        </div>
-                    </ScrollArea>
-                </div>
-
-                {/* Selected Songs Column */}
-                <div className="space-y-4">
-                  <h3 className="font-bold text-lg text-[#000f31] text-left font-headline">Tu lista de sugerencias ({selectedSongs.length}/10)</h3>
-                  <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-transparent">
-                      {selectedSongs.length === 0 && (
-                      <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70">
-                          <PartyPopper className="h-8 w-8 mb-2" />
-                          <p className="text-sm text-center">Tus canciones seleccionadas aparecerán aquí</p>
-                      </div>
-                      )}
-                      <div className="space-y-2">
-                      {selectedSongs.map(song => (
-                      <div key={song.id} className="flex items-center gap-3 p-2 rounded-md bg-black/5">
-                          <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
-                          <div className="text-left flex-grow overflow-hidden">
-                            <p className="font-semibold truncate text-[#000f31]">{song.name}</p>
-                            <p className="text-sm text-[#000f31]/70 truncate">{song.artist}</p>
-                          </div>
-                          <Button variant="ghost" size="icon" onClick={() => removeSong(song.id)} className="text-[#000f31]/70 hover:text-destructive">
-                          <Trash2 className="h-4 w-4" />
-                          </Button>
-                      </div>
-                      ))}
-                      </div>
-                  </ScrollArea>
-                </div>
+        <TabsContent value="search" className="mt-4">
+          <div className="space-y-4">
+            <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground text-[#000f31]/70" />
+                <Input
+                  id="song-search"
+                  type="text"
+                  placeholder="Busca una canción o artista..."
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                  className="pl-10 bg-white border-[#000f31]/50 text-lg text-[#000f31] placeholder:text-[#000f31]/70"
+                />
             </div>
-            <Button onClick={handleSubmit} disabled={isSubmitting || selectedSongs.length === 0} size="lg" className="w-full md:w-1/2 mx-auto mt-6 bg-[#000f31] hover:bg-[#002147] text-white hover:text-white font-bold rounded-full">
-              {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Enviando...</> : "Enviar Sugerencias"}
-            </Button>
-        </div>
+            <ScrollArea className="h-64 rounded-md border border-[#000f31]/30 p-2 bg-transparent">
+                {isSearching && <div className="flex justify-center items-center h-full"><Loader2 className="h-8 w-8 animate-spin text-[#000f31]" /></div>}
+                {!isSearching && searchResults.length === 0 && (
+                <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70 text-center p-4">
+                    <Music className="h-8 w-8 mb-2" />
+                    <p className="text-sm">Busca y selecciona tus canciones favoritas para añadirlas a la lista.</p>
+                </div>
+                )}
+                <div className="space-y-2">
+                {searchResults.map(song => (
+                <div key={song.id} onClick={() => addSong(song)} className="flex items-center gap-3 p-2 rounded-md hover:bg-[#000f31]/10 cursor-pointer">
+                    <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
+                    <div className="text-left flex-grow overflow-hidden">
+                    <p className="font-semibold truncate text-[#000f31]">{song.name}</p>
+                    <p className="text-sm text-[#000f31]/70 truncate">{song.artist}</p>
+                    </div>
+                </div>
+                ))}
+                </div>
+            </ScrollArea>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="list" className="mt-4">
+          <div className="space-y-4">
+            <ScrollArea className="h-72 rounded-md border border-[#000f31]/30 p-2 bg-transparent">
+                {selectedSongs.length === 0 && (
+                <div className="flex flex-col justify-center items-center h-full text-[#000f31]/70 text-center p-4">
+                    <PartyPopper className="h-8 w-8 mb-2" />
+                    <p className="text-sm">Tus canciones seleccionadas aparecerán aquí. ¡Puedes sugerir hasta 10!</p>
+                </div>
+                )}
+                <div className="space-y-2">
+                {selectedSongs.map(song => (
+                <div key={song.id} className="flex items-center gap-3 p-2 rounded-md bg-black/5">
+                    <Image src={song.albumArt} alt={song.name} width={40} height={40} className="rounded" />
+                    <div className="text-left flex-grow overflow-hidden">
+                      <p className="font-semibold truncate text-[#000f31]">{song.name}</p>
+                      <p className="text-sm text-[#000f31]/70 truncate">{song.artist}</p>
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => removeSong(song.id)} className="text-[#000f31]/70 hover:text-destructive">
+                    <Trash2 className="h-4 w-4" />
+                    </Button>
+                </div>
+                ))}
+                </div>
+            </ScrollArea>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      <div className="mt-6">
+        <Button onClick={handleSubmit} disabled={isSubmitting || selectedSongs.length === 0} size="lg" className="w-full md:w-auto mx-auto bg-[#000f31] hover:bg-[#002147] text-white hover:text-white font-bold rounded-full px-12">
+          {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin"/> Enviando...</> : "Enviar Sugerencias"}
+        </Button>
+      </div>
     </section>
   );
 }
