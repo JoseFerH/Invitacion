@@ -30,7 +30,7 @@ export function Hero() {
 
       <div className="max-w-xl mx-auto text-foreground/90 font-body">
         <p className="text-lg md:text-xl font-semibold text-accent tracking-wider">
-          Licenciada en Comunicación y Diseño Gráfico
+          
         </p>
       </div>
     </header>
