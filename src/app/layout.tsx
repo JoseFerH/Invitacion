@@ -34,6 +34,19 @@ const greatVibes = Great_Vibes({
 export const metadata: Metadata = {
   title: "Gabriela's Graduation Gala",
   description: "Interactive invitation for the graduation of Gabriela Alvarado Durante",
+  openGraph: {
+    title: "Gabriela's Graduation Gala",
+    description: "Te invito a celebrar mi graduación. ¡Será una noche inolvidable!",
+    images: [
+      {
+        url: 'https://storage.googleapis.com/proud-booster-424814-p0.appspot.com/miniatura%203_Mesa%20de%20trabajo%201.jpg', // Reemplaza YOUR_APP_URL con tu dominio real
+        width: 1200,
+        height: 630,
+        alt: "Invitación a la Gala de Graduación de Gabriela",
+      },
+    ],
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
