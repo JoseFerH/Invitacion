@@ -9,10 +9,10 @@ service cloud.firestore {
     }
 
     // Guests collection
-    // Allow anyone who is authenticated (including anonymous users) to create their own guest document.
-    // The document ID must match their own user ID for security.
+    // Allow an authenticated user to create or update their own guest document.
+    // The document ID must match their user ID for security.
     match /guests/{guestId} {
-      allow create: if request.auth != null && request.auth.uid == guestId;
+      allow create, update: if request.auth != null && request.auth.uid == guestId;
       allow read: if request.auth != null && request.auth.uid == guestId;
     }
 

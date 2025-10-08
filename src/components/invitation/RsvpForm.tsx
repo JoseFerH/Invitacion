@@ -4,7 +4,7 @@ import { useState, useRef, useTransition, use } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, useFirestore, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -80,10 +80,10 @@ export function RsvpForm() {
           guestId: user.uid,
         };
         
-        const guestsCollection = collection(firestore, 'guests');
+        const guestDocRef = doc(firestore, 'guests', user.uid);
 
-        addDoc(guestsCollection, guestData)
-          .then((docRef) => {
+        setDoc(guestDocRef, guestData, { merge: true })
+          .then(() => {
             toast({
               title: "¡Confirmación Exitosa!",
               description: `¡Gracias por confirmar, ${validatedFields.data.name}! Tu asistencia ha sido registrada.`,
@@ -94,8 +94,8 @@ export function RsvpForm() {
           })
           .catch((serverError) => { 
              const permissionError = new FirestorePermissionError({
-              path: guestsCollection.path,
-              operation: 'create',
+              path: guestDocRef.path,
+              operation: 'write',
               requestResourceData: guestData,
             });
             errorEmitter.emit('permission-error', permissionError);

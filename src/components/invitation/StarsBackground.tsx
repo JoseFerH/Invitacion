@@ -42,8 +42,12 @@ const stars: {
   { asset: 4, top: '58.8%', left: '9.9%', size: 28, opacity: 0.8, duration: 8, delay: 0.2 },
   { asset: 1, top: '61.8%', right: '6%', size: 30, opacity: 0.8, duration: 7, delay: 0.7 },
   
+  { asset: 4, top: '86.5%', left: '9%', size: 59, opacity: 0.8, duration: 8, delay: 0.2 },
+  { asset: 1, top: '88.4%', right: '10%', size: 40, opacity: 0.8, duration: 7, delay: 0.7 },
+  
+
   { asset: 3, top: '52.5%', left: '12%', size: 60, opacity: 0.8, duration: 4, delay: 0.4 },
-  { asset: 4, top: '53.5%', right: '12%', size: 25, opacity: 0.8, duration: 2, delay: 0.1 },
+  { asset: 4, top: '52.5%', right: '12%', size: 55, opacity: 0.8, duration: 2, delay: 0.1 },
   { asset: 0, top: '94%', right: '6%', size: 75, opacity: 0.8, duration: 7, delay: 0.7 },
   { asset: 3, top: '94.8%', left: '12%', size: 80, opacity: 0.8, duration: 4, delay: 0.4 },
   { asset: 4, top: '97.8%', left: '35%', size: 45, opacity: 0.8, duration: 2, delay: 0.1 },
