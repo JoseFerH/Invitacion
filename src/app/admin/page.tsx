@@ -118,7 +118,7 @@ export default function AdminPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center"><Users className="mr-2 text-gray-600"/> Invitados Confirmados</CardTitle>
-              {guests && <span className="text-lg font-bold text-gray-800">{totalAttendees} Asistentes</span>}
+              {guests && <span className="text-lg font-bold text-card-foreground">{totalAttendees} Asistentes</span>}
             </CardHeader>
             <CardContent>
               <div className="max-h-[60vh] overflow-y-auto">
