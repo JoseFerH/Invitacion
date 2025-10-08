@@ -14,7 +14,7 @@ export function Hero() {
       </div>
 
       <div>
-        <p className="text-2xl md:text-2xl text-foreground/80 font-lato font-light mt-10">
+        <p className="text-2xl md:text-2xl text-foreground/80 font-lato font-light mt-20">
           Te invitamos a celebrar la fiesta de graduación de
         </p>
         <div className="flex justify-center my-12">
@@ -28,11 +28,11 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="max-w-xl mx-auto text-foreground/90 font-body">
+      {/* <div className="max-w-xl mx-auto text-foreground/90 font-body">
         <p className="text-lg md:text-xl font-semibold text-accent tracking-wider">
           
         </p>
-      </div>
+      </div> */}
     </header>
   );
 }

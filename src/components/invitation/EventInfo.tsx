@@ -1,4 +1,5 @@
-import { MapPin, Clock, Shirt } from "lucide-react";
+import Image from 'next/image';
+import { MapPin, Shirt } from "lucide-react";
 import { SectionTitle } from "./SectionTitle";
 import { Map } from "./Map";
 
@@ -11,7 +12,13 @@ export function EventInfo() {
       
       <div className="grid grid-cols-3 gap-2 sm:gap-6">
         <div className="textured-card p-4 sm:p-6 rounded-2xl flex flex-col items-center text-center text-[#000f31]">
-          <Clock className="w-10 h-10 text-[#000f31] mb-3" />
+          <Image 
+            src="/assets/Recurso 3svg.svg" 
+            alt="Hora" 
+            width={40} 
+            height={40} 
+            className="mb-3"
+          />
           <h3 className="text-xl font-lato font-bold mb-1">Hora</h3>
           <p className="text-lg font-lato">7:30 PM</p>
         </div>
