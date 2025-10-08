@@ -37,7 +37,13 @@ export function EventInfo() {
         </div>
 
         <div className="textured-card p-4 sm:p-6 rounded-2xl flex flex-col items-center text-center text-[#000f31]">
-          <Shirt className="w-10 h-10 text-[#000f31] mb-3" />
+          <Image
+            src="/assets/Recurso 1svg.svg"
+            alt="Dress Code"
+            width={40}
+            height={40}
+            className="mb-3"
+          />
           <h3 className="text-xl font-lato font-bold mb-1">Dress Code</h3>
           <p className="text-lg font-lato">Formal</p>
           <p className="text-md text-[#000f31]/80">Color azul</p>
