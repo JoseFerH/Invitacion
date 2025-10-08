@@ -29,16 +29,16 @@ const stars: {
 }[] = [
   // Ejemplo de cómo añadir una estrella:
   { asset: 3, top: '1%', left: '8%', size: 90, opacity: 0.8, duration: 5, delay: 0.4 },
-  { asset: 0, top: '1%', right: '8%', size: 90, opacity: 0.8, duration: 3, delay: 0.2 },
+  { asset: 0, top: '6.6%', right: '5.8%', size: 75, opacity: 0.8, duration: 3, delay: 0.2 },
   { asset: 1, top: '3.8%', left: '25%', size: 20, opacity: 0.8, duration: 4, delay: 0.5 },
   { asset: 4, top: '3.7%', right: '19%', size: 18, opacity: 0.8, duration: 9, delay: 0.9 },
-  { asset: 4, top: '10.8%', right: '5.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.3 },
+  // { asset: 4, top: '10.8%', right: '5.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.3 },
   { asset: 4, top: '15%', left: '5.1%', size: 30, opacity: 0.8, duration: 2, delay: 0.6 },
-  { asset: 4, top: '23.8%', left: '24.9%', size: 28, opacity: 0.8, duration: 8, delay: 0.2 },
-  { asset: 0, top: '27%', right: '6%', size: 120, opacity: 0.8, duration: 7, delay: 0.7 },
+  { asset: 4, top: '21.8%', right: '14.9%', size: 28, opacity: 0.8, duration: 8, delay: 0.2 },
+  { asset: 0, top: '23%', left: '6%', size: 78, opacity: 0.8, duration: 7, delay: 0.7 },
 
-  { asset: 3, top: '45.8%', right: '8.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.3 },
-  { asset: 0, top: '47%', left: '5.1%', size:49, opacity: 0.8, duration: 2, delay: 0.6 },
+  { asset: 3, top: '44.8%', right: '8.1%', size: 56, opacity: 0.8, duration: 4, delay: 0.3 },
+  { asset: 0, top: '43.5%', left: '5.8%', size:49, opacity: 0.8, duration: 2, delay: 0.6 },
   { asset: 4, top: '58.8%', left: '9.9%', size: 28, opacity: 0.8, duration: 8, delay: 0.2 },
   { asset: 1, top: '61.8%', right: '6%', size: 30, opacity: 0.8, duration: 7, delay: 0.7 },
   
@@ -48,9 +48,9 @@ const stars: {
 
   { asset: 3, top: '52.5%', left: '12%', size: 60, opacity: 0.8, duration: 4, delay: 0.4 },
   { asset: 4, top: '52.5%', right: '12%', size: 55, opacity: 0.8, duration: 2, delay: 0.1 },
-  { asset: 0, top: '94%', right: '6%', size: 75, opacity: 0.8, duration: 7, delay: 0.7 },
+  //{ asset: 0, top: '94%', right: '6%', size: 75, opacity: 0.8, duration: 7, delay: 0.7 },
   { asset: 3, top: '94.8%', left: '12%', size: 80, opacity: 0.8, duration: 4, delay: 0.4 },
-  { asset: 4, top: '97.8%', left: '35%', size: 45, opacity: 0.8, duration: 2, delay: 0.1 },
+  //{ asset: 4, top: '97.8%', left: '35%', size: 45, opacity: 0.8, duration: 2, delay: 0.1 },
   
 ];
 
