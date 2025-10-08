@@ -38,6 +38,9 @@ const stars: {
   { asset: 0, top: '35%', right: '6%', size: 120, opacity: 0.8, duration: 7, delay: 0.7 },
   { asset: 3, top: '52.5%', left: '12%', size: 60, opacity: 0.8, duration: 4, delay: 0.4 },
   { asset: 4, top: '53.5%', right: '12%', size: 25, opacity: 0.8, duration: 2, delay: 0.1 },
+  { asset: 0, top: '94%', right: '6%', size: 75, opacity: 0.8, duration: 7, delay: 0.7 },
+  { asset: 3, top: '94.8%', left: '12%', size: 80, opacity: 0.8, duration: 4, delay: 0.4 },
+  { asset: 4, top: '97.8%', left: '35%', size: 45, opacity: 0.8, duration: 2, delay: 0.1 },
   
 ];
 
