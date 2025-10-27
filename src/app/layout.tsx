@@ -48,6 +48,9 @@ export const metadata: Metadata = {
     ],
     type: 'website',
   },
+  other: {
+    "fb:app_id": "000000000000000", // puedes dejar este número vacío o inventado si no usas Facebook login
+  },
 };
 
 export default function RootLayout({
