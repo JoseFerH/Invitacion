@@ -1,10 +1,9 @@
 'use server';
 
-import { z } from 'zod';
 import { searchSpotifyFlow } from '@/ai/flows/search-spotify-flow';
-import { collection, addDoc, serverTimestamp, writeBatch, doc, getFirestore } from 'firebase/firestore';
+import { collection, serverTimestamp, writeBatch, doc } from 'firebase/firestore';
 import { getSdks } from '@/firebase/server-sdks';
-import { signInAnonymously } from 'firebase/auth';
+import { getSpotifyToken } from '@/lib/spotify-auth';
 
 // The RSVP logic has been moved to the client-side component (RsvpForm.tsx)
 // to simplify authentication and ensure reliable writes to Firestore.
@@ -16,6 +15,16 @@ export type SpotifySong = {
   name: string;
   artist: string;
   albumArt: string;
+  previewUrl?: string | null;
+};
+
+export type SpotifyBackgroundTrack = {
+  id: string;
+  name: string;
+  artist: string;
+  albumArt: string;
+  previewUrl: string | null;
+  externalUrl: string;
 };
 
 export async function searchSongs(query: string): Promise<SpotifySong[]> {
@@ -29,6 +38,44 @@ export async function searchSongs(query: string): Promise<SpotifySong[]> {
   } catch(e) {
     console.error(e);
     return [];
+  }
+}
+
+
+export async function getBackgroundTrack(trackId: string): Promise<SpotifyBackgroundTrack | null> {
+  if (!trackId) {
+    return null;
+  }
+
+  try {
+    const token = await getSpotifyToken();
+    const response = await fetch(`https://api.spotify.com/v1/tracks/${trackId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Spotify track lookup error:', await response.text());
+      return null;
+    }
+
+    const data = await response.json();
+
+    return {
+      id: data.id,
+      name: data.name,
+      artist: data.artists?.map((artist: { name: string }) => artist.name).join(', ') ?? 'Artista desconocido',
+      albumArt:
+        data.album?.images?.[1]?.url ??
+        data.album?.images?.[0]?.url ??
+        'https://picsum.photos/seed/background-song/200/200',
+      previewUrl: data.preview_url ?? null,
+      externalUrl: data.external_urls?.spotify ?? `https://open.spotify.com/track/${trackId}`,
+    };
+  } catch (error) {
+    console.error('Error fetching Spotify background track:', error);
+    return null;
   }
 }
 

@@ -9,12 +9,14 @@ import { PhotoSection } from '@/components/invitation/PhotoSection';
 import { StarsBackground } from '@/components/invitation/StarsBackground';
 import { AddToCalendar } from '@/components/invitation/AddToCalendar';
 import { SectionTitle } from '@/components/invitation/SectionTitle';
+import { BackgroundMusicPlayer } from '@/components/invitation/BackgroundMusicPlayer';
 
 
 export default function Home() {
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-r from-[#002147] to-[#000f31]">
       <StarsBackground />
+      <BackgroundMusicPlayer />
 
       <main className="relative z-10 container mx-auto max-w-2xl p-4 sm:p-8 space-y-8 text-center">
         <Hero />

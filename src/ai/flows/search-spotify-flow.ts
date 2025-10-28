@@ -8,6 +8,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
+import { getSpotifyToken } from '@/lib/spotify-auth';
 
 // Define the schema for a Spotify track, matching what the frontend expects.
 const SpotifyTrackSchema = z.object({
@@ -18,46 +19,6 @@ const SpotifyTrackSchema = z.object({
 });
 
 type SpotifyTrack = z.infer<typeof SpotifyTrackSchema>;
-
-// Caches the Spotify access token to avoid re-fetching it on every call.
-let spotifyAccessToken = '';
-let tokenExpiryTime = 0;
-
-/**
- * Gets a Spotify access token, refreshing it if it's expired.
- */
-async function getSpotifyToken(): Promise<string> {
-  if (spotifyAccessToken && Date.now() < tokenExpiryTime) {
-    return spotifyAccessToken;
-  }
-
-  const clientId = process.env.SPOTIFY_CLIENT_ID;
-  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    throw new Error('Spotify API credentials are not configured in .env');
-  }
-
-  const response = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + Buffer.from(clientId + ':' + clientSecret).toString('base64'),
-    },
-    body: 'grant_type=client_credentials',
-  });
-
-  if (!response.ok) {
-    throw new Error(`Failed to get Spotify token: ${response.statusText}`);
-  }
-
-  const data = await response.json();
-  spotifyAccessToken = data.access_token;
-  // Set expiry time to 1 minute before the actual token expiry to be safe.
-  tokenExpiryTime = Date.now() + (data.expires_in - 60) * 1000;
-
-  return spotifyAccessToken;
-}
 
 // Define the main flow for searching Spotify.
 export const searchSpotifyFlow = ai.defineFlow(
