@@ -10,7 +10,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, Users, Music, Loader2 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { useMemo } from 'react';
+import type { FormEvent } from 'react';
+import { useMemo, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 // Define data types for guests and songs
 type Guest = {
@@ -25,18 +28,39 @@ type SongSuggestion = {
   submittedAt: { toDate: () => Date };
 };
 
+const DEFAULT_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? '123';
+
 
 export default function AdminPage() {
   const firestore = useFirestore();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [inputPassword, setInputPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handlePasswordSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (inputPassword.trim() === DEFAULT_PASSWORD) {
+      setIsAuthenticated(true);
+      setErrorMessage(null);
+      setInputPassword('');
+      return;
+    }
+
+    setErrorMessage('Contraseña incorrecta. Intenta nuevamente.');
+  };
 
   // Memoize Firestore queries to prevent re-renders
-  const guestsQuery = useMemoFirebase(() => 
-    firestore ? query(collection(firestore, 'guests'), orderBy('createdAt', 'desc')) : null
-  , [firestore]);
-  
+  const guestsQuery = useMemoFirebase(() =>
+    firestore && isAuthenticated
+      ? query(collection(firestore, 'guests'), orderBy('createdAt', 'desc'))
+      : null
+  , [firestore, isAuthenticated]);
+
   const songsQuery = useMemoFirebase(() =>
-    firestore ? query(collection(firestore, 'song_suggestions'), orderBy('submittedAt', 'desc')) : null
-  , [firestore]);
+    firestore && isAuthenticated
+      ? query(collection(firestore, 'song_suggestions'), orderBy('submittedAt', 'desc'))
+      : null
+  , [firestore, isAuthenticated]);
 
   const { data: guests, isLoading: isLoadingGuests } = useCollection<Guest>(guestsQuery);
   const { data: songs, isLoading: isLoadingSongs } = useCollection<SongSuggestion>(songsQuery);
@@ -136,7 +160,38 @@ export default function AdminPage() {
     doc.save('reporte_completo_graduacion.pdf');
   };
 
-  const isLoading = isLoadingGuests || isLoadingSongs;
+  const isLoading = isAuthenticated && (isLoadingGuests || isLoadingSongs);
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+        <Card className="w-full max-w-sm">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold text-gray-800">Acceso restringido</CardTitle>
+            <p className="text-sm text-gray-500">Ingresa la contraseña para entrar al panel.</p>
+          </CardHeader>
+          <CardContent>
+            <form className="space-y-4" onSubmit={handlePasswordSubmit}>
+              <div className="space-y-2">
+                <Label htmlFor="admin-password">Contraseña</Label>
+                <Input
+                  id="admin-password"
+                  type="password"
+                  value={inputPassword}
+                  autoComplete="current-password"
+                  onChange={(event) => setInputPassword(event.target.value)}
+                />
+                {errorMessage && <p className="text-sm text-destructive">{errorMessage}</p>}
+              </div>
+              <Button type="submit" className="w-full">
+                Ingresar
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 sm:p-8">
